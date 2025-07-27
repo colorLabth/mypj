@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายละเอียดเกม - GameStore</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #f5f5f7;
+        }
+        
+        .game-screenshots {
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+        }
+        
+        .screenshot {
+            scroll-snap-align: start;
+        }
+        
+        .star-rating {
+            display: inline-flex;
+        }
+        
+        .star-rating input {
+            display: none;
+        }
+        
+        .star-rating label {
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d1d5db'%3E%3Cpath d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+        }
+        
+        .star-rating input:checked ~ label {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fbbf24'%3E%3Cpath d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E");
+        }
+        
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fbbf24'%3E%3Cpath d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E");
+        }
+        
+        .star-display {
+            color: #fbbf24;
+        }
+        
+        .review-progress-bar {
+            height: 8px;
+            background-color: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .review-progress-fill {
+            height: 100%;
+            background-color: #fbbf24;
+        }
+        
+        /* Responsive fixes */
+        @media (max-width: 640px) {
+            .game-info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .screenshot-container {
+                height: 180px;
+            }
+        }
+        
+        /* Fix for iOS momentum scrolling */
+        .scrollable-area {
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Image upload area */
+        .image-upload-area {
+            border: 2px dashed #cbd5e0;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .image-upload-area:hover {
+            border-color: #a0aec0;
+            background-color: #f7fafc;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13.92 3.845a19.361 19.361 0 01-6.3 1.98C6.765 5.942 5.89 6 5 6a4 4 0 00-.504 7.969 15.974 15.974 0 001.271 3.341c.397.77 1.342 1.27 2.233 1.69.26.122.52.236.78.344a4 4 0 105.832-5.708 15.973 15.973 0 00.979-2.989 4 4 0 00-1.671-6.802z" />
+                    </svg>
+                    <h1 class="text-2xl font-bold text-gray-800">GameStore</h1>
+                </a>
+                
+                <div class="flex items-center space-x-4">
+                    <button id="back-button" class="text-gray-600 hover:text-gray-900 p-2 rounded-full hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                    </button>
+                    
+                    <button id="menu-button" class="text-gray-600 hover:text-gray-900 p-2 rounded-full hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Side Menu (same as in index.html) -->
+    <div id="side-menu" class="fixed top-0 right-[-320px] w-[320px] h-full bg-white z-50 transition-all duration-300 shadow-lg overflow-y-auto">
+        <div class="p-5 border-b border-gray-100">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13.92 3.845a19.361 19.361 0 01-6.3 1.98C6.765 5.942 5.89 6 5 6a4 4 0 00-.504 7.969 15.974 15.974 0 001.271 3.341c.397.77 1.342 1.27 2.233 1.69.26.122.52.236.78.344a4 4 0 105.832-5.708 15.973 15.973 0 00.979-2.989 4 4 0 00-1.671-6.802z" />
+                    </svg>
+                    <h1 class="text-2xl font-bold text-gray-800">GameStore</h1>
+                </div>
+                <button id="close-menu" class="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <div class="p-5">
+            <div class="mb-6">
+                <h3 class="text-xs uppercase text-gray-500 font-semibold tracking-wider mb-3">เมนูหลัก</h3>
+                <ul class="space-y-1">
+                    <li>
+                        <a href="index.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100">
+                            <i class="fas fa-home w-5 text-center text-indigo-600"></i>
+                            <span>หน้าแรก</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-xs uppercase text-gray-500 font-semibold tracking-wider mb-3">หมวดหมู่</h3>
+                <ul class="space-y-1">
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100">
+                            <i class="fas fa-gamepad w-5 text-center text-indigo-600"></i>
+                            <span>เกมแอคชั่น</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100">
+                            <i class="fas fa-mountain w-5 text-center text-indigo-600"></i>
+                            <span>เกมผจญภัย</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100">
+                            <i class="fas fa-puzzle-piece w-5 text-center text-indigo-600"></i>
+                            <span>เกมปริศนา</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100">
+                            <i class="fas fa-futbol w-5 text-center text-indigo-600"></i>
+                            <span>เกมกีฬา</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-xs uppercase text-gray-500 font-semibold tracking-wider mb-3">บริการ</h3>
+                <ul class="space-y-1">
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100">
+                            <i class="fas fa-download w-5 text-center text-indigo-600"></i>
+                            <span>ติดตั้งแอป</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100">
+                            <i class="fas fa-headset w-5 text-center text-indigo-600"></i>
+                            <span>ช่วยเหลือ</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 opacity-0 invisible transition-all duration-300"></div>
+    
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <div id="game-details" class="bg-white rounded-xl shadow-md overflow-hidden">
+            <!-- Game header with cover image -->
+            <div class="relative">
+                <div id="game-cover" class="w-full h-48 md:h-64 bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
+                    <!-- Game icon will be inserted here by JS -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13.92 3.845a19.361 19.361 0 01-6.3 1.98C6.765 5.942 5.89 6 5 6a4 4 0 00-.504 7.969 15.974 15.974 0 001.271 3.341c.397.77 1.342 1.27 2.233 1.69.26.122.52.236.78.344a4 4 0 105.832-5.708 15.973 15.973 0 00.979-2.989 4 4 0 00-1.671-6.802z" />
+                    </svg>
+                </div>
+                <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-4">
+                    <h1 id="game-title" class="text-2xl md:text-3xl font-bold text-white">ชื่อเกม</h1>
+                </div>
+            </div>
+            
+            <!-- Game info section -->
+            <div class="p-4 md:p-6">
+                <div class="flex flex-wrap items-center gap-4 mb-6">
+                    <div class="flex items-center">
+                        <div id="game-rating" class="text-yellow-400 text-xl">★★★★☆</div>
+                        <span id="game-rating-value" class="ml-1 text-gray-700 font-medium">0.0</span>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        <span id="review-count">0</span> รีวิว
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        <span id="download-count">0</span> ดาวน์โหลด
+                    </div>
+                    <div id="game-category" class="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full">
+                        แอคชั่น
+                    </div>
+                </div>
+                
+                <!-- Download button -->
+                <div class="mb-8">
+                    <button id="download-button" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-medium flex items-center justify-center transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                        ดาวน์โหลด
+                    </button>
+                </div>
+                
+                <!-- Screenshots -->
+                <div class="mb-8">
+                    <div class="flex justify-between items-center mb-3">
+                        <h2 class="text-lg font-semibold text-gray-800">สกรีนช็อต</h2>
+                        <button id="manage-screenshots" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium hidden">จัดการรูปภาพ</button>
+                    </div>
+                    <div class="relative">
+                        <div id="screenshots-container" class="game-screenshots flex space-x-4 overflow-x-auto pb-4 scrollable-area">
+                            <!-- Screenshots will be inserted here by JS -->
+                            <div class="screenshot flex-shrink-0 w-60 h-32 md:h-40 bg-gray-200 rounded-lg overflow-hidden">
+                                <div class="w-full h-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="screenshot flex-shrink-0 w-60 h-32 md:h-40 bg-gray-200 rounded-lg overflow-hidden">
+                                <div class="w-full h-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="screenshot flex-shrink-0 w-60 h-32 md:h-40 bg-gray-200 rounded-lg overflow-hidden">
+                                <div class="w-full h-full bg-gradient-to-br from-green-400 to-teal-500 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Description -->
+                <div class="mb-8">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-3">รายละเอียด</h2>
+                    <div id="game-description" class="text-gray-600 space-y-3">
+                        <p>คำอธิบายเกมจะปรากฏที่นี่...</p>
+                    </div>
+                </div>
+                
+                <!-- Reviews -->
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-800">รีวิวจากผู้เล่น</h2>
+                        <button id="write-review-btn" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">เขียนรีวิว</button>
+                    </div>
+                    
+                    <!-- Review stats -->
+                    <div class="flex flex-col md:flex-row gap-6 mb-6">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="text-4xl font-bold text-gray-800" id="average-rating">0.0</div>
+                            <div class="text-yellow-400 text-xl mb-1" id="average-rating-stars">☆☆☆☆☆</div>
+                            <div class="text-sm text-gray-500"><span id="total-reviews">0</span> รีวิว</div>
+                        </div>
+                        
+                        <div class="flex-grow">
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <div class="w-12 text-sm text-gray-600">5 ดาว</div>
+                                    <div class="flex-grow mx-2">
+                                        <div class="review-progress-bar">
+                                            <div class="review-progress-fill" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="w-8 text-sm text-gray-600">0%</div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-12 text-sm text-gray-600">4 ดาว</div>
+                                    <div class="flex-grow mx-2">
+                                        <div class="review-progress-bar">
+                                            <div class="review-progress-fill" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="w-8 text-sm text-gray-600">0%</div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-12 text-sm text-gray-600">3 ดาว</div>
+                                    <div class="flex-grow mx-2">
+                                        <div class="review-progress-bar">
+                                            <div class="review-progress-fill" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="w-8 text-sm text-gray-600">0%</div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-12 text-sm text-gray-600">2 ดาว</div>
+                                    <div class="flex-grow mx-2">
+                                        <div class="review-progress-bar">
+                                            <div class="review-progress-fill" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="w-8 text-sm text-gray-600">0%</div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-12 text-sm text-gray-600">1 ดาว</div>
+                                    <div class="flex-grow mx-2">
+                                        <div class="review-progress-bar">
+                                            <div class="review-progress-fill" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="w-8 text-sm text-gray-600">0%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Write review form (hidden by default) -->
+                    <div id="review-form" class="mb-6 p-4 bg-gray-50 rounded-lg hidden">
+                        <h3 class="text-md font-medium text-gray-800 mb-3">เขียนรีวิวของคุณ</h3>
+                        <div class="mb-4">
+                            <div class="flex items-center mb-2">
+                                <label class="block text-sm font-medium text-gray-700 mr-3">ให้คะแนน:</label>
+                                <div class="star-rating">
+                                    <input type="radio" id="star5" name="rating" value="5" />
+                                    <label for="star5" title="5 ดาว"></label>
+                                    <input type="radio" id="star4" name="rating" value="4" />
+                                    <label for="star4" title="4 ดาว"></label>
+                                    <input type="radio" id="star3" name="rating" value="3" />
+                                    <label for="star3" title="3 ดาว"></label>
+                                    <input type="radio" id="star2" name="rating" value="2" />
+                                    <label for="star2" title="2 ดาว"></label>
+                                    <input type="radio" id="star1" name="rating" value="1" />
+                                    <label for="star1" title="1 ดาว"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="review-name" class="block text-sm font-medium text-gray-700 mb-1">ชื่อ:</label>
+                            <input type="text" id="review-name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="ชื่อของคุณ">
+                        </div>
+                        <div class="mb-4">
+                            <label for="review-text" class="block text-sm font-medium text-gray-700 mb-1">รีวิว:</label>
+                            <textarea id="review-text" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="เขียนความคิดเห็นของคุณที่นี่..."></textarea>
+                        </div>
+                        <div class="flex justify-end space-x-3">
+                            <button id="cancel-review" class="px-4 py-2 text-gray-600 hover:text-gray-800">ยกเลิก</button>
+                            <button id="submit-review" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">ส่งรีวิว</button>
+                        </div>
+                    </div>
+                    
+                    <!-- User reviews list -->
+                    <div id="reviews-list" class="space-y-4">
+                        <!-- Reviews will be inserted here by JS -->
+                        <div id="no-reviews-message" class="p-4 bg-gray-50 rounded-lg text-center text-gray-500">
+                            ยังไม่มีรีวิว เป็นคนแรกที่รีวิวเกมนี้!
+                        </div>
+                    </div>
+                    
+                    <!-- Show more reviews button -->
+                    <div class="mt-6 text-center">
+                        <button id="show-more-reviews" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium hidden">ดูรีวิวทั้งหมด</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Screenshot management modal (hidden by default) -->
+        <div id="screenshot-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+            <div class="bg-white rounded-lg w-full max-w-lg mx-4 overflow-hidden">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                    <h3 class="text-lg font-medium text-gray-800">จัดการรูปภาพ</h3>
+                    <button id="close-screenshot-modal" class="text-gray-500 hover:text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">อัพโหลดรูปภาพใหม่</label>
+                        <div id="image-upload-area" class="image-upload-area">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400 mb-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                            </svg>
+                            <p class="text-sm text-gray-500">คลิกเพื่ออัพโหลดรูปภาพ หรือลากและวางที่นี่</p>
+                            <input type="file" id="screenshot-upload" class="hidden" accept="image/*" multiple>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">รูปภาพปัจจุบัน</label>
+                        <div id="current-screenshots" class="grid grid-cols-2 gap-2">
+                            <!-- Current screenshots will be inserted here by JS -->
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 border-t border-gray-200 flex justify-end">
+                    <button id="save-screenshots" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">บันทึก</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-indigo-600 text-white mt-10">
+        <div class="container mx-auto px-6 py-10">
+            <!-- Top Footer Section -->
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <div class="flex items-center space-x-3 mb-6 md:mb-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13.92 3.845a19.361 19.361 0 01-6.3 1.98C6.765 5.942 5.89 6 5 6a4 4 0 00-.504 7.969 15.974 15.974 0 001.271 3.341c.397.77 1.342 1.27 2.233 1.69.26.122.52.236.78.344a4 4 0 105.832-5.708 15.973 15.973 0 00.979-2.989 4 4 0 00-1.671-6.802z" />
+                    </svg>
+                    <h3 class="text-2xl font-bold">GameStore</h3>
+                </div>
+                
+                <div class="flex space-x-4">
+                    <a href="#" class="bg-indigo-500 hover:bg-indigo-400 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="bg-indigo-500 hover:bg-indigo-400 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="bg-indigo-500 hover:bg-indigo-400 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Links -->
+            <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
+                <a href="#" class="text-indigo-200 hover:text-white transition-colors duration-200">นโยบายความเป็นส่วนตัว</a>
+                <a href="#" class="text-indigo-200 hover:text-white transition-colors duration-200">เงื่อนไขการใช้งาน</a>
+                <a href="#" class="text-indigo-200 hover:text-white transition-colors duration-200">คุกกี้</a>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Game data structure
+        const gameData = {
+            "speed-runner": {
+                id: "speed-runner",
+                name: "Speed Runner",
+                category: "แอคชั่น",
+                description: `Speed Runner เป็นเกมแอคชั่นที่ท้าทายความเร็วและความแม่นยำของคุณ! วิ่งผ่านด่านที่เต็มไปด้วยอุปสรรคและศัตรู เก็บไอเทมเพื่อเพิ่มความเร็วและพลัง
+
+ฟีเจอร์เด่น:
+• ด่านมากกว่า 100 ด่านที่ท้าทาย
+• ตัวละครหลากหลายให้เลือกใช้
+• ระบบอัพเกรดความสามารถ
+• กราฟิกสวยงามคมชัด
+• เล่นได้ทั้งออนไลน์และออฟไลน์
+
+เหมาะสำหรับผู้เล่นทุกวัยที่ชื่นชอบเกมแนวแอคชั่นและความท้าทาย!`,
+                coverColor: "from-blue-400 to-indigo-600",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
+                </svg>`,
+                screenshots: [
+                    { color: "from-blue-400 to-indigo-500" },
+                    { color: "from-indigo-500 to-purple-600" },
+                    { color: "from-blue-500 to-cyan-400" }
+                ]
+            },
+            "candy-match": {
+                id: "candy-match",
+                name: "Candy Match",
+                category: "ปริศนา",
+                description: `Candy Match เป็นเกมจับคู่ลูกอมสุดสนุกที่จะทำให้คุณเพลิดเพลินไปกับการจับคู่ลูกอมหลากสีสัน ผ่านด่านต่างๆ มากมาย
+
+ฟีเจอร์เด่น:
+• ด่านมากกว่า 500 ด่าน
+• ลูกอมหลากหลายรูปแบบ
+• ไอเทมพิเศษมากมาย
+• กราฟิกน่ารักสดใส
+• อัพเดทด่านใหม่ทุกสัปดาห์
+
+เหมาะสำหรับทุกเพศทุกวัย เล่นได้ทุกที่ทุกเวลา!`,
+                coverColor: "from-pink-400 to-red-500",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
+                </svg>`,
+                screenshots: [
+                    { color: "from-pink-400 to-red-500" },
+                    { color: "from-red-400 to-yellow-500" },
+                    { color: "from-yellow-400 to-pink-500" }
+                ]
+            },
+            "ninja-warrior": {
+                id: "ninja-warrior",
+                name: "Ninja Warrior",
+                category: "แอคชั่น",
+                description: `Ninja Warrior เป็นเกมแอคชั่นสุดมันส์ที่คุณจะได้สวมบทบาทเป็นนินจาผู้พิทักษ์ ต่อสู้กับศัตรูมากมายด้วยอาวุธและทักษะพิเศษ
+
+ฟีเจอร์เด่น:
+• ระบบต่อสู้ที่ลื่นไหล
+• อาวุธมากกว่า 30 ชนิด
+• ทักษะพิเศษมากมาย
+• บอสสุดแข็งแกร่ง
+• กราฟิกสไตล์อนิเมะสวยงาม
+
+เหมาะสำหรับผู้ที่ชื่นชอบเกมแอคชั่นและการต่อสู้!`,
+                coverColor: "from-blue-500 to-cyan-500",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
+                </svg>`,
+                screenshots: [
+                    { color: "from-blue-500 to-cyan-500" },
+                    { color: "from-cyan-500 to-blue-600" },
+                    { color: "from-indigo-500 to-blue-500" }
+                ]
+            }
+        };
+        
+        // Get game ID from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const gameId = urlParams.get('id') || 'speed-runner'; // Default to speed-runner if no ID provided
+        
+        // Load game data
+        const game = gameData[gameId];
+        
+        // Initialize localStorage if needed
+        function initializeLocalStorage() {
+            // Initialize reviews
+            if (!localStorage.getItem(`reviews-${gameId}`)) {
+                localStorage.setItem(`reviews-${gameId}`, JSON.stringify([]));
+            }
+            
+            // Initialize download counts
+            if (!localStorage.getItem('downloadCounts')) {
+                localStorage.setItem('downloadCounts', JSON.stringify({}));
+            }
+            
+            // Initialize displayed download counts (for 1000+ increments)
+            if (!localStorage.getItem('displayedDownloadCounts')) {
+                localStorage.setItem('displayedDownloadCounts', JSON.stringify({}));
+            }
+            
+            // Initialize download history
+            if (!localStorage.getItem('downloadHistory')) {
+                localStorage.setItem('downloadHistory', JSON.stringify([]));
+            }
+            
+            // Initialize screenshots
+            if (!localStorage.getItem(`screenshots-${gameId}`)) {
+                localStorage.setItem(`screenshots-${gameId}`, JSON.stringify(game.screenshots || []));
+            }
+        }
+        
+        // Populate game details
+        function loadGameDetails() {
+            if (!game) {
+                alert('ไม่พบข้อมูลเกม');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Set page title
+            document.title = `${game.name} - GameStore`;
+            
+            // Set game cover and icon
+            const gameCover = document.getElementById('game-cover');
+            gameCover.className = `w-full h-48 md:h-64 bg-gradient-to-r ${game.coverColor} flex items-center justify-center`;
+            gameCover.innerHTML = game.icon;
+            
+            // Set game title and info
+            document.getElementById('game-title').textContent = game.name;
+            document.getElementById('game-category').textContent = game.category;
+            
+            // Set description
+            document.getElementById('game-description').innerHTML = game.description.split('\n').map(para => `<p>${para}</p>`).join('');
+            
+            // Load screenshots
+            loadScreenshots();
+            
+            // Load reviews
+            loadReviews();
+            
+            // Load download count
+            loadDownloadCount();
+        }
+        
+        // Load screenshots from localStorage or default data
+        function loadScreenshots() {
+            const screenshotsContainer = document.getElementById('screenshots-container');
+            screenshotsContainer.innerHTML = '';
+            
+            // Get screenshots from localStorage or use default
+            const storedScreenshots = localStorage.getItem(`screenshots-${gameId}`);
+            const screenshots = storedScreenshots ? JSON.parse(storedScreenshots) : game.screenshots;
+            
+            screenshots.forEach((screenshot, index) => {
+                const screenshotElement = document.createElement('div');
+                screenshotElement.className = 'screenshot flex-shrink-0 w-60 h-32 md:h-40 bg-gray-200 rounded-lg overflow-hidden';
+                
+                // Check if screenshot is a base64 image or just a color
+                if (screenshot.image) {
+                    screenshotElement.innerHTML = `
+                        <img src="${screenshot.image}" class="w-full h-full object-cover" alt="Screenshot ${index + 1}">
+                    `;
+                } else {
+                    screenshotElement.innerHTML = `
+                        <div class="w-full h-full bg-gradient-to-br ${screenshot.color} flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    `;
+                }
+                
+                screenshotsContainer.appendChild(screenshotElement);
+            });
+        }
+        
+        // Load reviews from localStorage
+        function loadReviews() {
+            const reviewsList = document.getElementById('reviews-list');
+            reviewsList.innerHTML = '';
+            
+            // Get reviews from localStorage
+            const reviews = JSON.parse(localStorage.getItem(`reviews-${gameId}`)) || [];
+            
+            // Show message if no reviews
+            if (reviews.length === 0) {
+                document.getElementById('no-reviews-message').classList.remove('hidden');
+                document.getElementById('show-more-reviews').classList.add('hidden');
+                
+                // Update review stats
+                document.getElementById('review-count').textContent = '0';
+                document.getElementById('total-reviews').textContent = '0';
+                document.getElementById('average-rating').textContent = '0.0';
+                document.getElementById('average-rating-stars').textContent = '☆☆☆☆☆';
+                document.getElementById('game-rating').textContent = '☆☆☆☆☆';
+                document.getElementById('game-rating-value').textContent = '0.0';
+                
+                // Reset progress bars
+                const progressBars = document.querySelectorAll('.review-progress-fill');
+                const percentageTexts = document.querySelectorAll('.review-progress-bar + .w-8');
+                
+                for (let i = 0; i < 5; i++) {
+                    progressBars[i].style.width = '0%';
+                    percentageTexts[i].textContent = '0%';
+                }
+                
+                return;
+            }
+            
+            // Hide no reviews message
+            document.getElementById('no-reviews-message').classList.add('hidden');
+            
+            // Display only first 3 reviews initially
+            const displayReviews = reviews.length > 3 ? reviews.slice(0, 3) : reviews;
+            
+            displayReviews.forEach(review => {
+                const reviewElement = createReviewElement(review);
+                reviewsList.appendChild(reviewElement);
+            });
+            
+            // Show/hide "Show more" button
+            const showMoreBtn = document.getElementById('show-more-reviews');
+            if (reviews.length <= 3) {
+                showMoreBtn.classList.add('hidden');
+            } else {
+                showMoreBtn.classList.remove('hidden');
+            }
+            
+            // Update review stats
+            updateReviewStats(reviews);
+        }
+        
+        // Create a review element
+        function createReviewElement(review) {
+            const reviewElement = document.createElement('div');
+            reviewElement.className = 'p-4 bg-gray-50 rounded-lg';
+            
+            const ratingStars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+            
+            reviewElement.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <div>
+                        <div class="font-medium">${review.name}</div>
+                        <div class="text-yellow-400 text-sm">${ratingStars}</div>
+                    </div>
+                    <div class="text-xs text-gray-500">${formatDate(review.date)}</div>
+                </div>
+                <div class="mt-2 text-gray-600">${review.text}</div>
+            `;
+            
+            return reviewElement;
+        }
+        
+        // Format date to Thai format
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return date.toLocaleDateString('th-TH', options);
+        }
+        
+        // Update review statistics
+        function updateReviewStats(reviews) {
+            // Calculate average rating
+            const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+            const averageRating = reviews.length > 0 ? totalRating / reviews.length : 0;
+            
+            // Update display
+            document.getElementById('average-rating').textContent = averageRating.toFixed(1);
+            document.getElementById('total-reviews').textContent = reviews.length;
+            document.getElementById('review-count').textContent = reviews.length;
+            
+            // Update star display
+            const ratingStars = '★'.repeat(Math.floor(averageRating)) + '☆'.repeat(5 - Math.floor(averageRating));
+            document.getElementById('game-rating').textContent = ratingStars;
+            document.getElementById('average-rating-stars').textContent = ratingStars;
+            document.getElementById('game-rating-value').textContent = averageRating.toFixed(1);
+            
+            // Calculate percentages for each star rating
+            const ratingCounts = [0, 0, 0, 0, 0]; // 1-5 stars
+            
+            reviews.forEach(review => {
+                ratingCounts[review.rating - 1]++;
+            });
+            
+            const ratingPercentages = ratingCounts.map(count => 
+                reviews.length > 0 ? Math.round((count / reviews.length) * 100) : 0
+            );
+            
+            // Update progress bars
+            const progressBars = document.querySelectorAll('.review-progress-fill');
+            const percentageTexts = document.querySelectorAll('.review-progress-bar + .w-8');
+            
+            for (let i = 0; i < 5; i++) {
+                progressBars[4 - i].style.width = `${ratingPercentages[i]}%`;
+                percentageTexts[4 - i].textContent = `${ratingPercentages[i]}%`;
+            }
+            
+            // Save updated game data to localStorage
+            const allGames = JSON.parse(localStorage.getItem('games') || '{}');
+            if (!allGames[gameId]) allGames[gameId] = {};
+            allGames[gameId].rating = averageRating;
+            allGames[gameId].reviewCount = reviews.length;
+            localStorage.setItem('games', JSON.stringify(allGames));
+        }
+        
+        // Load download count
+        function loadDownloadCount() {
+            const downloadCounts = JSON.parse(localStorage.getItem('downloadCounts')) || {};
+            const displayedDownloadCounts = JSON.parse(localStorage.getItem('displayedDownloadCounts')) || {};
+            
+            // Initialize if not exists
+            if (!downloadCounts[gameId]) downloadCounts[gameId] = 0;
+            if (!displayedDownloadCounts[gameId]) displayedDownloadCounts[gameId] = 0;
+            
+            // Format download count
+            let displayCount = displayedDownloadCounts[gameId];
+            let formattedCount;
+            
+            if (displayCount >= 1000000) {
+                formattedCount = (displayCount / 1000000).toFixed(1) + 'M+';
+            } else if (displayCount >= 1000) {
+                formattedCount = (displayCount / 1000).toFixed(1) + 'K+';
+            } else {
+                formattedCount = displayCount.toString();
+            }
+            
+            document.getElementById('download-count').textContent = formattedCount;
+        }
+        
+        // Side menu functionality
+        const sideMenu = document.getElementById('side-menu');
+        const overlay = document.getElementById('overlay');
+        const menuButton = document.getElementById('menu-button');
+        const closeMenu = document.getElementById('close-menu');
+        
+        function toggleMenu() {
+            if (sideMenu.style.right === '0px') {
+                sideMenu.style.right = '-320px';
+                overlay.classList.remove('opacity-100', 'visible');
+                overlay.classList.add('opacity-0', 'invisible');
+            } else {
+                sideMenu.style.right = '0px';
+                overlay.classList.remove('opacity-0', 'invisible');
+                overlay.classList.add('opacity-100', 'visible');
+            }
+        }
+        
+        menuButton.addEventListener('click', toggleMenu);
+        closeMenu.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+        
+        // Back button functionality
+        document.getElementById('back-button').addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+        
+        // Write review functionality
+        const writeReviewBtn = document.getElementById('write-review-btn');
+        const reviewForm = document.getElementById('review-form');
+        const cancelReviewBtn = document.getElementById('cancel-review');
+        const submitReviewBtn = document.getElementById('submit-review');
+        
+        writeReviewBtn.addEventListener('click', function() {
+            reviewForm.classList.remove('hidden');
+            writeReviewBtn.classList.add('hidden');
+        });
+        
+        cancelReviewBtn.addEventListener('click', function() {
+            reviewForm.classList.add('hidden');
+            writeReviewBtn.classList.remove('hidden');
+            
+            // Reset form
+            document.getElementById('review-name').value = '';
+            document.getElementById('review-text').value = '';
+            const checkedStar = document.querySelector('input[name="rating"]:checked');
+            if (checkedStar) checkedStar.checked = false;
+        });
+        
+        submitReviewBtn.addEventListener('click', function() {
+            const rating = document.querySelector('input[name="rating"]:checked');
+            const name = document.getElementById('review-name').value.trim();
+            const text = document.getElementById('review-text').value.trim();
+            
+            if (!rating) {
+                alert('กรุณาให้คะแนน');
+                return;
+            }
+            
+            if (!name) {
+                alert('กรุณาระบุชื่อ');
+                return;
+            }
+            
+            if (!text) {
+                alert('กรุณาเขียนรีวิว');
+                return;
+            }
+            
+            // Create new review
+            const newReview = {
+                name: name,
+                rating: parseInt(rating.value),
+                text: text,
+                date: new Date().toISOString().split('T')[0]
+            };
+            
+            // Get existing reviews from localStorage
+            const reviews = JSON.parse(localStorage.getItem(`reviews-${gameId}`)) || [];
+            
+            // Add new review to the beginning
+            reviews.unshift(newReview);
+            
+            // Save to localStorage
+            localStorage.setItem(`reviews-${gameId}`, JSON.stringify(reviews));
+            
+            // Reload reviews
+            loadReviews();
+            
+            // Hide form and show button
+            reviewForm.classList.add('hidden');
+            writeReviewBtn.classList.remove('hidden');
+            
+            // Reset form
+            document.getElementById('review-name').value = '';
+            document.getElementById('review-text').value = '';
+            rating.checked = false;
+            
+            alert('ขอบคุณสำหรับรีวิว!');
+        });
+        
+        // Show more reviews
+        document.getElementById('show-more-reviews').addEventListener('click', function() {
+            const reviewsList = document.getElementById('reviews-list');
+            reviewsList.innerHTML = '';
+            
+            // Get all reviews
+            const reviews = JSON.parse(localStorage.getItem(`reviews-${gameId}`)) || [];
+            
+            // Display all reviews
+            reviews.forEach(review => {
+                const reviewElement = createReviewElement(review);
+                reviewsList.appendChild(reviewElement);
+            });
+            
+            // Hide "Show more" button
+            this.classList.add('hidden');
+        });
+        
+        // Download button functionality
+        document.getElementById('download-button').addEventListener('click', function() {
+            // Get current counts
+            const downloadCounts = JSON.parse(localStorage.getItem('downloadCounts')) || {};
+            const displayedDownloadCounts = JSON.parse(localStorage.getItem('displayedDownloadCounts')) || {};
+            
+            // Initialize if not exists
+            if (!downloadCounts[gameId]) downloadCounts[gameId] = 0;
+            if (!displayedDownloadCounts[gameId]) displayedDownloadCounts[gameId] = 0;
+            
+            // Increment actual download count
+            downloadCounts[gameId]++;
+            
+            // Check if we should update displayed count (every 1000 downloads)
+            if (downloadCounts[gameId] % 1000 === 0) {
+                displayedDownloadCounts[gameId] = downloadCounts[gameId];
+                
+                // Update display
+                loadDownloadCount();
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('downloadCounts', JSON.stringify(downloadCounts));
+            localStorage.setItem('displayedDownloadCounts', JSON.stringify(displayedDownloadCounts));
+            
+            // Add to download history if not already there
+            const history = JSON.parse(localStorage.getItem('downloadHistory') || '[]');
+            if (!history.includes(gameId)) {
+                history.push(gameId);
+                localStorage.setItem('downloadHistory', JSON.stringify(history));
+            }
+            
+            alert(`เริ่มดาวน์โหลดเกม ${game.name} แล้ว`);
+        });
+        
+        // Screenshot management functionality
+        const manageScreenshotsBtn = document.getElementById('manage-screenshots');
+        const screenshotModal = document.getElementById('screenshot-modal');
+        const closeScreenshotModalBtn = document.getElementById('close-screenshot-modal');
+        const imageUploadArea = document.getElementById('image-upload-area');
+        const screenshotUpload = document.getElementById('screenshot-upload');
+        const saveScreenshotsBtn = document.getElementById('save-screenshots');
+        
+        // For future implementation - currently hidden
+        // manageScreenshotsBtn.addEventListener('click', function() {
+        //     screenshotModal.classList.remove('hidden');
+        //     loadCurrentScreenshots();
+        // });
+        
+        closeScreenshotModalBtn.addEventListener('click', function() {
+            screenshotModal.classList.add('hidden');
+        });
+        
+        imageUploadArea.addEventListener('click', function() {
+            screenshotUpload.click();
+        });
+        
+        // For future implementation of screenshot uploads
+        screenshotUpload.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                // Handle file uploads here
+                // This would convert images to base64 and store them
+            }
+        });
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeLocalStorage();
+            loadGameDetails();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'965eac4ee3fe75d8',t:'MTc1MzY0NTkwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
