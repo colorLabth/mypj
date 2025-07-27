@@ -491,6 +491,7 @@
                 id: "speed-runner",
                 name: "Speed Runner",
                 category: "แอคชั่น",
+                image: "images/speed-runner-cover.jpg",
                 description: `Speed Runner เป็นเกมแอคชั่นที่ท้าทายความเร็วและความแม่นยำของคุณ! วิ่งผ่านด่านที่เต็มไปด้วยอุปสรรคและศัตรู เก็บไอเทมเพื่อเพิ่มความเร็วและพลัง
 
 ฟีเจอร์เด่น:
@@ -610,7 +611,11 @@
             // Set game cover and icon
             const gameCover = document.getElementById('game-cover');
             gameCover.className = `w-full h-48 md:h-64 bg-gradient-to-r ${game.coverColor} flex items-center justify-center`;
-            gameCover.innerHTML = game.icon;
+            if (game.image) {
+                gameCover.innerHTML = `<img src="${game.image}" alt="${game.name} Cover" class="h-full w-full object-cover">`;
+            } else {
+                gameCover.innerHTML = game.icon;
+            }         
             
             // Set game title and info
             document.getElementById('game-title').textContent = game.name;
