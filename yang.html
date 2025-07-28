@@ -277,6 +277,135 @@
     
     <script>
         
+        // Game data structure - same as in game-details.html
+        const gameData = {
+            "speed-runner": {
+                id: "speed-runner",
+                name: "Speed Runner",
+                category: "แอคชั่น",
+                description: `Speed Runner เป็นเกมแอคชั่นที่ท้าทายความเร็วและความแม่นยำของคุณ! วิ่งผ่านด่านที่เต็มไปด้วยอุปสรรคและศัตรู เก็บไอเทมเพื่อเพิ่มความเร็วและพลัง
+
+ฟีเจอร์เด่น:
+• ด่านมากกว่า 100 ด่านที่ท้าทาย
+• ตัวละครหลากหลายให้เลือกใช้
+• ระบบอัพเกรดความสามารถ
+• กราฟิกสวยงามคมชัด
+• เล่นได้ทั้งออนไลน์และออฟไลน์
+
+เหมาะสำหรับผู้เล่นทุกวัยที่ชื่นชอบเกมแนวแอคชั่นและความท้าทาย!`,
+                coverColor: "from-blue-400 to-indigo-600",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
+                </svg>`,
+                screenshots: [
+                    { color: "from-blue-400 to-indigo-500" },
+                    { color: "from-indigo-500 to-purple-600" },
+                    { color: "from-blue-500 to-cyan-400" }
+                ],
+                featured: true,
+                popular: true
+            },
+            "candy-match": {
+                id: "candy-match",
+                name: "Candy Match",
+                category: "ปริศนา",
+                description: `Candy Match เป็นเกมจับคู่ลูกอมสุดสนุกที่จะทำให้คุณเพลิดเพลินไปกับการจับคู่ลูกอมหลากสีสัน ผ่านด่านต่างๆ มากมาย
+
+ฟีเจอร์เด่น:
+• ด่านมากกว่า 500 ด่าน
+• ลูกอมหลากหลายรูปแบบ
+• ไอเทมพิเศษมากมาย
+• กราฟิกน่ารักสดใส
+• อัพเดทด่านใหม่ทุกสัปดาห์
+
+เหมาะสำหรับทุกเพศทุกวัย เล่นได้ทุกที่ทุกเวลา!`,
+                coverColor: "from-pink-400 to-red-500",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
+                </svg>`,
+                screenshots: [
+                    { color: "from-pink-400 to-red-500" },
+                    { color: "from-red-400 to-yellow-500" },
+                    { color: "from-yellow-400 to-pink-500" }
+                ],
+                featured: true,
+                popular: true
+            },
+            "ninja-warrior": {
+                id: "ninja-warrior",
+                name: "Ninja Warrior",
+                category: "แอคชั่น",
+                description: `Ninja Warrior เป็นเกมแอคชั่นสุดมันส์ที่คุณจะได้สวมบทบาทเป็นนินจาผู้พิทักษ์ ต่อสู้กับศัตรูมากมายด้วยอาวุธและทักษะพิเศษ
+
+ฟีเจอร์เด่น:
+• ระบบต่อสู้ที่ลื่นไหล
+• อาวุธมากกว่า 30 ชนิด
+• ทักษะพิเศษมากมาย
+• บอสสุดแข็งแกร่ง
+• กราฟิกสไตล์อนิเมะสวยงาม
+
+เหมาะสำหรับผู้ที่ชื่นชอบเกมแอคชั่นและการต่อสู้!`,
+                coverColor: "from-blue-500 to-cyan-500",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
+                </svg>`,
+                screenshots: [
+                    { color: "from-blue-500 to-cyan-500" },
+                    { color: "from-cyan-500 to-blue-600" },
+                    { color: "from-indigo-500 to-blue-500" }
+                ],
+                featured: true,
+                popular: true
+            },
+            "farm-ville": {
+                id: "farm-ville",
+                name: "Farm Ville",
+                category: "จำลอง",
+                description: "สร้างฟาร์มในฝันของคุณ ปลูกพืช เลี้ยงสัตว์ และขยายอาณาจักรการเกษตรของคุณ",
+                coverColor: "from-green-400 to-emerald-600",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>`,
+                screenshots: [
+                    { color: "from-green-400 to-emerald-500" },
+                    { color: "from-emerald-500 to-green-600" },
+                    { color: "from-yellow-400 to-green-500" }
+                ],
+                popular: true
+            },
+            "car-racing": {
+                id: "car-racing",
+                name: "Car Racing",
+                category: "แข่งรถ",
+                description: "สัมผัสความเร็วสุดมันส์กับเกมแข่งรถที่สมจริงที่สุด",
+                coverColor: "from-red-500 to-orange-500",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+                    <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z" />
+                </svg>`,
+                screenshots: [
+                    { color: "from-red-500 to-orange-500" },
+                    { color: "from-orange-500 to-yellow-500" },
+                    { color: "from-yellow-500 to-red-500" }
+                ],
+                popular: true
+            },
+            "space-adventure": {
+                id: "space-adventure",
+                name: "Space Adventure",
+                category: "ผจญภัย",
+                description: "ออกเดินทางสู่อวกาศอันไกลโพ้น ค้นพบดาวเคราะห์ใหม่และสิ่งมีชีวิตแปลกๆ",
+                coverColor: "from-indigo-600 to-purple-600",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>`,
+                screenshots: [
+                    { color: "from-indigo-600 to-purple-600" },
+                    { color: "from-purple-600 to-indigo-600" },
+                    { color: "from-blue-600 to-purple-600" }
+                ]
+            }
+        };
         // Initialize localStorage if needed
         function initializeLocalStorage() {
             // Initialize games data
