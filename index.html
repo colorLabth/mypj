@@ -15,9 +15,7 @@
         }
         
         .game-card {
-            transition: 
-            transform 0.3s ease, 
-            box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
         .game-card:hover {
@@ -25,29 +23,39 @@
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
         
-        .download-btn {
-            transition: all 0.2s ease;
+        .category-scroll {
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
         }
         
-        .download-btn:hover {
-            transform: translateY(-2px);
+        .category-item {
+            scroll-snap-align: start;
         }
         
-        .search-results {
-            max-height: 300px;
-            overflow-y: auto;
+        .featured-scroll {
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
         }
         
-        .search-container {
-            transition: all 0.3s ease;
+        .featured-item {
+            scroll-snap-align: start;
         }
         
-        .search-expanded {
-            width: 100%;
+        /* Responsive fixes */
+        @media (max-width: 640px) {
+            .game-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
         
-        .search-collapsed {
-            width: auto;
+        /* Fix for iOS momentum scrolling */
+        .scrollable-area {
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Star rating display */
+        .star-display {
+            color: #fbbf24;
         }
         
         .side-menu {
