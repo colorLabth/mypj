@@ -170,7 +170,158 @@
         </div>
     </div>
     
+    <!-- Overlay -->
+    <div id="overlay" class="overlay"></div>
     
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div id="logo-container" class="flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13.92 3.845a19.361 19.361 0 01-6.3 1.98C6.765 5.942 5.89 6 5 6a4 4 0 00-.504 7.969 15.974 15.974 0 001.271 3.341c.397.77 1.342 1.27 2.233 1.69.26.122.52.236.78.344a4 4 0 105.832-5.708 15.973 15.973 0 00.979-2.989 4 4 0 00-1.671-6.802z" />
+                    </svg>
+                    <h1 class="text-2xl font-bold text-gray-800">GameStore</h1>
+                </div>
+                
+                <div id="search-container" class="search-container search-collapsed flex items-center ml-auto mr-4">
+                    <button id="search-icon" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button>
+                    <div id="search-input-container" class="hidden w-full ml-2 relative">
+                        <input type="text" id="search-input" class="search-input w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="ค้นหาเกม...">
+                        <button id="close-search" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="search-results" class="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg z-50 search-results scrollable-area hidden mx-4">
+                        <!-- Search results will be populated here -->
+                    </div>
+                </div>
+                
+                <div id="menu-button" class="text-gray-600 hover:text-gray-900 cursor-pointer p-2 rounded-full hover:bg-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Featured Games / กิจกรรมแจกรางวัล -->
+    <div id="events-section" class="content-section container mx-auto px-4 py-6">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="section-title text-2xl font-bold text-gray-800">กิจกรรมแจกรางวัล</h2>
+            <div class="flex items-center">
+                <button class="section-edit-btn hidden text-gray-500 hover:text-indigo-600 mr-2">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="section-visibility-btn hidden text-gray-500 hover:text-indigo-600">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="event-card-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Event 1 -->
+            <div class="game-card bg-white rounded-xl overflow-hidden shadow-md">
+                <div class="relative">
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-600 h-40 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-white" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5 5a3 3 0 015-2.236A3 3 0 0114.83 6H16a2 2 0 110 4h-5V9a1 1 0 10-2 0v1H4a2 2 0 110-4h1.17C5.06 5.687 5 5.35 5 5zm4 1V5a1 1 0 10-1 1h1zm3 0a1 1 0 10-1-1v1h1z" clip-rule="evenodd" />
+                            <path d="M9 11H3v5a2 2 0 002 2h4v-7zM11 18h4a2 2 0 002-2v-5h-6v7z" />
+                        </svg>
+                    </div>
+                    <div class="absolute top-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded-full">
+                        กิจกรรมพิเศษ
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">ลุ้นรับไอเทมพิเศษ</h3>
+                            <p class="text-gray-500 text-sm">สำหรับเกม Battle Royale Masters</p>
+                        </div>
+                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-md font-medium">ถึง 30 มิ.ย.</span>
+                    </div>
+                    <div class="mt-4">
+                        <button class="download-btn w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium flex items-center justify-center" data-game="battle-royale-masters">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                            เข้าร่วมกิจกรรม
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Event 2 -->
+            <div class="game-card bg-white rounded-xl overflow-hidden shadow-md">
+                <div class="relative">
+                    <div class="bg-gradient-to-r from-red-500 to-orange-500 h-40 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-white" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
+                        </svg>
+                    </div>
+                    <div class="absolute top-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded-full">
+                        โปรโมชั่น
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">แจกเครดิตฟรี 100 บาท</h3>
+                            <p class="text-gray-500 text-sm">สำหรับเกม Racing Legends</p>
+                        </div>
+                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-md font-medium">ถึง 15 มิ.ย.</span>
+                    </div>
+                    <div class="mt-4">
+                        <button class="download-btn w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium flex items-center justify-center" data-game="racing-legends">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                            รับเครดิตฟรี
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Event 3 -->
+            <div class="game-card bg-white rounded-xl overflow-hidden shadow-md">
+                <div class="relative">
+                    <div class="bg-gradient-to-r from-green-500 to-teal-500 h-40 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-white" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="absolute top-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded-full">
+                        ทัวร์นาเมนต์
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">แข่งขันชิงเงินรางวัล</h3>
+                            <p class="text-gray-500 text-sm">สำหรับเกม Puzzle Quest</p>
+                        </div>
+                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-md font-medium">20-25 มิ.ย.</span>
+                    </div>
+                    <div class="mt-4">
+                        <button class="download-btn w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium flex items-center justify-center" data-game="puzzle-quest">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                            สมัครแข่งขัน
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
         
         <!-- Popular Games -->
         <section class="mb-10">
