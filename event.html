@@ -110,11 +110,13 @@
         <div id="event-details" class="bg-white rounded-xl shadow-md overflow-hidden">
             <!-- Event header with cover image -->
             <div class="relative">
-                <div id="event-cover" class="w-full h-48 md:h-64 bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
-                    <!-- Event icon will be inserted here by JS -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
-                    </svg>
+                <div id="event-cover" class="w-full h-48 md:h-64 bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center relative overflow-hidden">
+                    <!-- Event cover will be inserted here by JS -->
+                    <div id="event-cover-content" class="flex items-center justify-center w-full h-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
                 </div>
                 <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-4">
                     <h1 id="event-title" class="text-2xl md:text-3xl font-bold text-white">ชื่อกิจกรรม</h1>
@@ -325,6 +327,62 @@
 
 มาร่วมเป็นส่วนหนึ่งของการแข่งขันที่ยิ่งใหญ่ที่สุดในปีนี้!`,
                 coverColor: "from-purple-400 to-pink-400",
+                coverImage: `
+                    <div class="absolute inset-0 bg-gradient-to-br from-purple-600 to-indigo-800"></div>
+                    <div class="relative z-10 text-center">
+                        <div class="mb-4">
+                            <svg class="w-20 h-20 mx-auto text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
+                        </div>
+                        <div class="text-white">
+                            <div class="text-lg font-bold mb-2">🏰 CASTLE DEFENSE</div>
+                            <div class="text-sm opacity-90">ป้องกันปราสาทแห่งเกียรติยศ</div>
+                        </div>
+                    </div>
+                `,
+                galleryImages: [
+                    {
+                        content: `<div class="absolute inset-0 bg-gradient-to-br from-red-500 to-orange-600"></div>
+                                 <div class="relative z-10 flex items-center justify-center h-full">
+                                     <div class="text-center text-white">
+                                         <div class="text-4xl mb-2">⚔️</div>
+                                         <div class="font-bold">การต่อสู้</div>
+                                     </div>
+                                 </div>`,
+                        title: "ภาพการต่อสู้ในเกม"
+                    },
+                    {
+                        content: `<div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600"></div>
+                                 <div class="relative z-10 flex items-center justify-center h-full">
+                                     <div class="text-center text-white">
+                                         <div class="text-4xl mb-2">🏆</div>
+                                         <div class="font-bold">รางวัล</div>
+                                     </div>
+                                 </div>`,
+                        title: "รางวัลการแข่งขัน"
+                    },
+                    {
+                        content: `<div class="absolute inset-0 bg-gradient-to-br from-green-500 to-teal-600"></div>
+                                 <div class="relative z-10 flex items-center justify-center h-full">
+                                     <div class="text-center text-white">
+                                         <div class="text-4xl mb-2">🎯</div>
+                                         <div class="font-bold">เป้าหมาย</div>
+                                     </div>
+                                 </div>`,
+                        title: "เป้าหมายการเล่น"
+                    },
+                    {
+                        content: `<div class="absolute inset-0 bg-gradient-to-br from-yellow-500 to-orange-600"></div>
+                                 <div class="relative z-10 flex items-center justify-center h-full">
+                                     <div class="text-center text-white">
+                                         <div class="text-4xl mb-2">👥</div>
+                                         <div class="font-bold">ทีมงาน</div>
+                                     </div>
+                                 </div>`,
+                        title: "การเล่นแบบทีม"
+                    }
+                ],
                 rating: 4.8,
                 status: "กำลังดำเนินการ",
                 statusColor: "green",
@@ -358,6 +416,62 @@
 
 เตรียมตัวให้พร้อมสำหรับการแข่งขันที่จะทำให้หัวใจเต้นแรง!`,
                 coverColor: "from-green-400 to-blue-400",
+                coverImage: `
+                    <div class="absolute inset-0 bg-gradient-to-br from-red-600 to-orange-700"></div>
+                    <div class="relative z-10 text-center">
+                        <div class="mb-4">
+                            <svg class="w-20 h-20 mx-auto text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.22.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
+                            </svg>
+                        </div>
+                        <div class="text-white">
+                            <div class="text-lg font-bold mb-2">🏎️ SPEED RACING</div>
+                            <div class="text-sm opacity-90">แข่งรถความเร็วสูง</div>
+                        </div>
+                    </div>
+                `,
+                galleryImages: [
+                    {
+                        content: `<div class="absolute inset-0 bg-gradient-to-br from-red-600 to-pink-600"></div>
+                                 <div class="relative z-10 flex items-center justify-center h-full">
+                                     <div class="text-center text-white">
+                                         <div class="text-4xl mb-2">🏁</div>
+                                         <div class="font-bold">เส้นชัย</div>
+                                     </div>
+                                 </div>`,
+                        title: "เส้นชัยการแข่งขัน"
+                    },
+                    {
+                        content: `<div class="absolute inset-0 bg-gradient-to-br from-blue-600 to-indigo-600"></div>
+                                 <div class="relative z-10 flex items-center justify-center h-full">
+                                     <div class="text-center text-white">
+                                         <div class="text-4xl mb-2">🚗</div>
+                                         <div class="font-bold">รถแข่ง</div>
+                                     </div>
+                                 </div>`,
+                        title: "รถแข่งสุดล้ำ"
+                    },
+                    {
+                        content: `<div class="absolute inset-0 bg-gradient-to-br from-green-600 to-teal-600"></div>
+                                 <div class="relative z-10 flex items-center justify-center h-full">
+                                     <div class="text-center text-white">
+                                         <div class="text-4xl mb-2">🏟️</div>
+                                         <div class="font-bold">สนาม</div>
+                                     </div>
+                                 </div>`,
+                        title: "สนามแข่งระดับโลก"
+                    },
+                    {
+                        content: `<div class="absolute inset-0 bg-gradient-to-br from-yellow-600 to-orange-600"></div>
+                                 <div class="relative z-10 flex items-center justify-center h-full">
+                                     <div class="text-center text-white">
+                                         <div class="text-4xl mb-2">💨</div>
+                                         <div class="font-bold">ความเร็ว</div>
+                                     </div>
+                                 </div>`,
+                        title: "ความเร็วสูงสุด"
+                    }
+                ],
                 rating: 4.6,
                 status: "มาแรง",
                 statusColor: "red",
@@ -390,6 +504,62 @@
 
 ท้าทายสมองของคุณและพิสูจน์ว่าคุณคือนักคิดที่เก่งที่สุด!`,
                 coverColor: "from-orange-400 to-red-400",
+                coverImage: `
+                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-600 to-purple-800"></div>
+                    <div class="relative z-10 text-center">
+                        <div class="mb-4">
+                            <svg class="w-20 h-20 mx-auto text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M9.504 1.132a1 1 0 01.992 0l1.75 1a1 1 0 11-.992 1.736L10 3.152l-1.254.716a1 1 0 11-.992-1.736l1.75-1zM5.618 4.504a1 1 0 01-.372 1.364L5.016 6l.23.132a1 1 0 11-.992 1.736L3 7.723V8a1 1 0 01-2 0V6a.996.996 0 01.52-.878l1.734-.99a1 1 0 011.364.372zm8.764 0a1 1 0 011.364-.372l1.733.99A1.002 1.002 0 0118 6v2a1 1 0 11-2 0v-.277l-1.254.145a1 1 0 11-.992-1.736L14.984 6l-.23-.132a1 1 0 01-.372-1.364zm-7 4a1 1 0 011.364-.372L10 8.848l1.254-.716a1 1 0 11.992 1.736L11 10.723V12a1 1 0 11-2 0v-1.277l-1.246-.855a1 1 0 01-.372-1.364zM3 11a1 1 0 011 1v1.277l1.246.855a1 1 0 01-.992 1.736L3 15.152l-1.254.716a1 1 0 11-.992-1.736L2 13.277V12a1 1 0 011-1zm14 0a1 1 0 011 1v1.277l1.246.855a1 1 0 01-.992 1.736L17 15.152l-1.254.716a1 1 0 11-.992-1.736L16 13.277V12a1 1 0 011-1zm-9.618 5.504a1 1 0 011.364-.372l.254.145V16a1 1 0 112 0v.277l.254-.145a1 1 0 11.992 1.736l-1.735.992a.995.995 0 01-1.022 0l-1.735-.992a1 1 0 01-.372-1.364z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div class="text-white">
+                            <div class="text-lg font-bold mb-2">🧩 MIND PUZZLE</div>
+                            <div class="text-sm opacity-90">ท้าทายสมองและไหวพริบ</div>
+                        </div>
+                    </div>
+                `,
+                galleryImages: [
+                    {
+                        content: `<div class="absolute inset-0 bg-gradient-to-br from-purple-600 to-indigo-600"></div>
+                                 <div class="relative z-10 flex items-center justify-center h-full">
+                                     <div class="text-center text-white">
+                                         <div class="text-4xl mb-2">🧠</div>
+                                         <div class="font-bold">ฝึกสมอง</div>
+                                     </div>
+                                 </div>`,
+                        title: "การฝึกสมองและไหวพริบ"
+                    },
+                    {
+                        content: `<div class="absolute inset-0 bg-gradient-to-br from-green-600 to-teal-600"></div>
+                                 <div class="relative z-10 flex items-center justify-center h-full">
+                                     <div class="text-center text-white">
+                                         <div class="text-4xl mb-2">⏰</div>
+                                         <div class="font-bold">จับเวลา</div>
+                                     </div>
+                                 </div>`,
+                        title: "การแข่งขันแบบจับเวลา"
+                    },
+                    {
+                        content: `<div class="absolute inset-0 bg-gradient-to-br from-orange-600 to-red-600"></div>
+                                 <div class="relative z-10 flex items-center justify-center h-full">
+                                     <div class="text-center text-white">
+                                         <div class="text-4xl mb-2">🎯</div>
+                                         <div class="font-bold">คะแนน</div>
+                                     </div>
+                                 </div>`,
+                        title: "ระบบคะแนนสะสม"
+                    },
+                    {
+                        content: `<div class="absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-600"></div>
+                                 <div class="relative z-10 flex items-center justify-center h-full">
+                                     <div class="text-center text-white">
+                                         <div class="text-4xl mb-2">🏅</div>
+                                         <div class="font-bold">รางวัล</div>
+                                     </div>
+                                 </div>`,
+                        title: "รางวัลสำหรับผู้ชนะ"
+                    }
+                ],
                 rating: 4.9,
                 status: "แนะนำ",
                 statusColor: "blue",
@@ -424,6 +594,62 @@
 
 มาร่วมเป็นส่วนหนึ่งของการแข่งขันฟุตบอลที่ยิ่งใหญ่ที่สุด!`,
                 coverColor: "from-indigo-400 to-purple-400",
+                coverImage: `
+                    <div class="absolute inset-0 bg-gradient-to-br from-green-600 to-emerald-800"></div>
+                    <div class="relative z-10 text-center">
+                        <div class="mb-4">
+                            <svg class="w-20 h-20 mx-auto text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                            </svg>
+                        </div>
+                        <div class="text-white">
+                            <div class="text-lg font-bold mb-2">⚽ SOCCER CHAMPION</div>
+                            <div class="text-sm opacity-90">แชมป์ฟุตบอลโลก</div>
+                        </div>
+                    </div>
+                `,
+                galleryImages: [
+                    {
+                        content: `<div class="absolute inset-0 bg-gradient-to-br from-green-600 to-emerald-600"></div>
+                                 <div class="relative z-10 flex items-center justify-center h-full">
+                                     <div class="text-center text-white">
+                                         <div class="text-4xl mb-2">⚽</div>
+                                         <div class="font-bold">ฟุตบอล</div>
+                                     </div>
+                                 </div>`,
+                        title: "การแข่งขันฟุตบอล"
+                    },
+                    {
+                        content: `<div class="absolute inset-0 bg-gradient-to-br from-blue-600 to-indigo-600"></div>
+                                 <div class="relative z-10 flex items-center justify-center h-full">
+                                     <div class="text-center text-white">
+                                         <div class="text-4xl mb-2">🏟️</div>
+                                         <div class="font-bold">สนาม</div>
+                                     </div>
+                                 </div>`,
+                        title: "สนามแข่งระดับโลก"
+                    },
+                    {
+                        content: `<div class="absolute inset-0 bg-gradient-to-br from-yellow-600 to-orange-600"></div>
+                                 <div class="relative z-10 flex items-center justify-center h-full">
+                                     <div class="text-center text-white">
+                                         <div class="text-4xl mb-2">🏆</div>
+                                         <div class="font-bold">ถ้วยรางวัล</div>
+                                     </div>
+                                 </div>`,
+                        title: "ถ้วยแชมป์โลก"
+                    },
+                    {
+                        content: `<div class="absolute inset-0 bg-gradient-to-br from-purple-600 to-pink-600"></div>
+                                 <div class="relative z-10 flex items-center justify-center h-full">
+                                     <div class="text-center text-white">
+                                         <div class="text-4xl mb-2">👥</div>
+                                         <div class="font-bold">ทีม</div>
+                                     </div>
+                                 </div>`,
+                        title: "การเล่นแบบทีม"
+                    }
+                ],
                 rating: 4.7,
                 status: "กำลังดำเนินการ",
                 statusColor: "yellow",
@@ -512,7 +738,13 @@
 
             // Update event cover
             const eventCover = document.getElementById('event-cover');
-            eventCover.className = `w-full h-48 md:h-64 bg-gradient-to-r ${event.coverColor} flex items-center justify-center`;
+            const eventCoverContent = document.getElementById('event-cover-content');
+            eventCover.className = `w-full h-48 md:h-64 bg-gradient-to-r ${event.coverColor} flex items-center justify-center relative overflow-hidden`;
+            
+            // Set custom cover image if available
+            if (event.coverImage) {
+                eventCoverContent.innerHTML = event.coverImage;
+            }
 
             // Update event title
             document.getElementById('event-title').textContent = event.name;
@@ -602,27 +834,38 @@
 
         // Load gallery for the event
         function loadGallery(eventId, coverColor) {
-            const gallery = generateGallery(eventId, coverColor);
+            const event = eventData[eventId];
             const container = document.getElementById('gallery-container');
             
-            container.innerHTML = gallery.map((image, index) => `
-                <div class="gallery-item flex-shrink-0 w-60 h-32 md:h-40 bg-gray-200 rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onclick="openImageModal('${image.color}', '${image.title}')">
-                    <div class="w-full h-full bg-gradient-to-br ${image.color} flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
-                        </svg>
+            // Use custom gallery images if available, otherwise generate default ones
+            const galleryImages = event.galleryImages || generateGallery(eventId, coverColor);
+            
+            container.innerHTML = galleryImages.map((image, index) => `
+                <div class="gallery-item flex-shrink-0 w-60 h-32 md:h-40 bg-gray-200 rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onclick="openImageModal('${image.content || `bg-gradient-to-br ${image.color} flex items-center justify-center`}', '${image.title}')">
+                    <div class="w-full h-full relative">
+                        ${image.content || `<div class="w-full h-full bg-gradient-to-br ${image.color} flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                            </svg>
+                        </div>`}
                     </div>
                 </div>
             `).join('');
         }
 
         // Image modal functions
-        function openImageModal(color, title) {
+        function openImageModal(content, title) {
             const modal = document.getElementById('image-modal');
             const modalImage = document.getElementById('modal-image');
             const modalTitle = document.getElementById('modal-title');
             
-            modalImage.className = `w-full h-96 bg-gradient-to-br ${color} rounded-lg flex items-center justify-center`;
+            // Check if content is HTML or just a class name
+            if (content.includes('<div')) {
+                modalImage.innerHTML = `<div class="w-full h-96 rounded-lg relative overflow-hidden">${content}</div>`;
+            } else {
+                modalImage.className = `w-full h-96 ${content} rounded-lg`;
+            }
+            
             modalTitle.textContent = title;
             
             modal.classList.remove('opacity-0', 'invisible');
@@ -702,5 +945,5 @@
             });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9690c74193e6f82a',t:'MTc1NDE3MTI5NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'969109eb65b175d8',t:'MTc1NDE3NDAyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
