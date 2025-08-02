@@ -132,18 +132,15 @@
                     </div>
                 </div>
 
-                <!-- Screenshots/Gallery -->
+                <!-- Screenshots -->
                 <div class="mb-8">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">ภาพตัวอย่าง</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        <div class="aspect-video bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg flex items-center justify-center">
-                            <span class="text-gray-500 text-sm">ภาพตัวอย่าง 1</span>
-                        </div>
-                        <div class="aspect-video bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg flex items-center justify-center">
-                            <span class="text-gray-500 text-sm">ภาพตัวอย่าง 2</span>
-                        </div>
-                        <div class="aspect-video bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg flex items-center justify-center">
-                            <span class="text-gray-500 text-sm">ภาพตัวอย่าง 3</span>
+                    <div class="flex justify-between items-center mb-3">
+                        <h2 class="text-lg font-semibold text-gray-800">สกรีนช็อต</h2>
+                        <button id="manage-screenshots" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium hidden">จัดการรูปภาพ</button>
+                    </div>
+                    <div class="relative">
+                        <div id="screenshots-container" class="game-screenshots flex space-x-4 overflow-x-auto pb-4 scrollable-area">
+                            <!-- Screenshots will be inserted here by JS -->
                         </div>
                     </div>
                 </div>
@@ -216,13 +213,7 @@
             </div>
         </div>
 
-        <!-- Related Games -->
-        <div class="mt-8">
-            <h3 class="text-xl font-bold text-gray-900 mb-6">เกมที่เกี่ยวข้อง</h3>
-            <div id="related-games" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                <!-- Related games will be populated by JavaScript -->
-            </div>
-        </div>
+
     </main>
 
     <script>
@@ -474,6 +465,31 @@
             return stars;
         }
 
+        // Generate screenshots based on game ID
+        function generateScreenshots(gameId, coverColor) {
+            const screenshots = [];
+            const colors = [
+                'from-indigo-400 to-purple-500',
+                'from-blue-400 to-indigo-500', 
+                'from-green-400 to-teal-500',
+                'from-purple-400 to-pink-500',
+                'from-orange-400 to-red-500'
+            ];
+            
+            // Generate 3-5 screenshots per game
+            const numScreenshots = 3 + (gameId.length % 3);
+            
+            for (let i = 0; i < numScreenshots; i++) {
+                const colorIndex = (gameId.charCodeAt(i % gameId.length) + i) % colors.length;
+                screenshots.push({
+                    color: colors[colorIndex],
+                    title: `ภาพตัวอย่าง ${i + 1}`
+                });
+            }
+            
+            return screenshots;
+        }
+
         // Load and display game data
         function loadGameData() {
             const gameId = getGameIdFromURL();
@@ -546,35 +562,25 @@
                 downloadBtn.onclick = () => alert('เริ่มดาวน์โหลดเกม: ' + game.name);
             }
 
-            // Load related games
-            loadRelatedGames(game);
+            // Load screenshots
+            loadScreenshots(gameId, game.coverColor);
 
             // Show main content
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('main-content').classList.remove('hidden');
         }
 
-        // Load related games
-        function loadRelatedGames(currentGame) {
-            const relatedContainer = document.getElementById('related-games');
-            let relatedGames = Object.values(gameData)
-                .filter(game => game.id !== currentGame.id && game.category === currentGame.category)
-                .slice(0, 6);
-
-            if (relatedGames.length === 0) {
-                // If no games in same category, show random games
-                const allOtherGames = Object.values(gameData).filter(game => game.id !== currentGame.id);
-                relatedGames = allOtherGames.slice(0, 6);
-            }
-
-            relatedContainer.innerHTML = relatedGames.map(game => `
-                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover cursor-pointer" onclick="goToGame('${game.id}')">
-                    <div class="h-24 bg-gradient-to-br ${game.coverColor} flex items-center justify-center">
-                        <span class="text-white font-bold text-sm">${game.name}</span>
-                    </div>
-                    <div class="p-3">
-                        <h4 class="font-semibold text-xs text-gray-900 mb-1">${game.name}</h4>
-                        <p class="text-gray-600 text-xs">${game.category}</p>
+        // Load screenshots for the game
+        function loadScreenshots(gameId, coverColor) {
+            const screenshots = generateScreenshots(gameId, coverColor);
+            const container = document.getElementById('screenshots-container');
+            
+            container.innerHTML = screenshots.map(screenshot => `
+                <div class="screenshot flex-shrink-0 w-60 h-32 md:h-40 bg-gray-200 rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+                    <div class="w-full h-full bg-gradient-to-br ${screenshot.color} flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                        </svg>
                     </div>
                 </div>
             `).join('');
@@ -589,14 +595,7 @@
             }
         }
 
-        function goToGame(gameId) {
-            const game = gameData[gameId];
-            if (game.type === 'event') {
-                window.location.href = `https://colorlabth.github.io/mypj/event.html?id=${gameId}`;
-            } else {
-                window.location.href = `https://colorlabth.github.io/mypj/detail.html?id=${gameId}`;
-            }
-        }
+
 
         function shareGame() {
             const gameId = getGameIdFromURL();
@@ -619,5 +618,5 @@
         // Initialize page
         document.addEventListener('DOMContentLoaded', loadGameData);
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'968e9cf2e50110f8',t:'MTc1NDE0ODU5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'968eb872f7cb5805',t:'MTc1NDE0OTcxNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
