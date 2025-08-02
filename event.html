@@ -85,6 +85,26 @@
     <!-- Overlay -->
     <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 opacity-0 invisible transition-all duration-300"></div>
     
+    <!-- Image Modal -->
+    <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-90 z-50 opacity-0 invisible transition-all duration-300 flex items-center justify-center">
+        <div class="relative max-w-4xl max-h-full p-4">
+            <button id="close-modal" class="absolute top-4 right-4 text-white hover:text-gray-300 z-10">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <div id="modal-image" class="w-full h-96 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-lg flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                </svg>
+            </div>
+            <div class="text-center mt-4">
+                <h3 id="modal-title" class="text-white text-xl font-semibold">ภาพกิจกรรม</h3>
+                <p class="text-gray-300 text-sm mt-2">คลิกที่พื้นที่ว่างหรือปุ่ม X เพื่อปิด</p>
+            </div>
+        </div>
+    </div>
+    
     <!-- Main Content -->
     <main id="main-content" class="container mx-auto px-4 py-6 hidden">
         <div id="event-details" class="bg-white rounded-xl shadow-md overflow-hidden">
@@ -554,19 +574,19 @@
             // Load rules
             loadEventRules(event.rules);
 
-            // Update join button with game links
+            // Update join button with external game links
             const joinBtn = document.getElementById('join-button');
             const gameLinks = {
-                'castle-defense': 'https://colorlabth.github.io/mypj/castle-defense.html',
-                'speed-racing': 'https://colorlabth.github.io/mypj/speed-racing.html',
-                'mind-puzzle': 'https://colorlabth.github.io/mypj/mind-puzzle.html',
-                'soccer-champion': 'https://colorlabth.github.io/mypj/soccer-champion.html'
+                'castle-defense': 'https://www.crazygames.com/game/castle-defense',
+                'speed-racing': 'https://www.crazygames.com/game/madalin-stunt-cars-2',
+                'mind-puzzle': 'https://www.crazygames.com/game/2048',
+                'soccer-champion': 'https://www.crazygames.com/game/soccer-legends-2021'
             };
             
             joinBtn.onclick = () => {
                 const gameLink = gameLinks[eventId];
                 if (gameLink) {
-                    window.location.href = gameLink;
+                    window.open(gameLink, '_blank');
                 } else {
                     alert(`เข้าร่วมกิจกรรม: ${event.name}\n\nคุณได้ลงทะเบียนเข้าร่วมกิจกรรมเรียบร้อยแล้ว!\nเราจะส่งข้อมูลเพิ่มเติมให้คุณทางอีเมล`);
                 }
@@ -585,8 +605,8 @@
             const gallery = generateGallery(eventId, coverColor);
             const container = document.getElementById('gallery-container');
             
-            container.innerHTML = gallery.map(image => `
-                <div class="gallery-item flex-shrink-0 w-60 h-32 md:h-40 bg-gray-200 rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+            container.innerHTML = gallery.map((image, index) => `
+                <div class="gallery-item flex-shrink-0 w-60 h-32 md:h-40 bg-gray-200 rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onclick="openImageModal('${image.color}', '${image.title}')">
                     <div class="w-full h-full bg-gradient-to-br ${image.color} flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
@@ -595,6 +615,29 @@
                 </div>
             `).join('');
         }
+
+        // Image modal functions
+        function openImageModal(color, title) {
+            const modal = document.getElementById('image-modal');
+            const modalImage = document.getElementById('modal-image');
+            const modalTitle = document.getElementById('modal-title');
+            
+            modalImage.className = `w-full h-96 bg-gradient-to-br ${color} rounded-lg flex items-center justify-center`;
+            modalTitle.textContent = title;
+            
+            modal.classList.remove('opacity-0', 'invisible');
+            modal.classList.add('opacity-100', 'visible');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('image-modal');
+            modal.classList.remove('opacity-100', 'visible');
+            modal.classList.add('opacity-0', 'invisible');
+            document.body.style.overflow = 'auto';
+        }
+
+
 
         // Load event rules
         function loadEventRules(rules) {
@@ -638,7 +681,26 @@
         }
 
         // Initialize page
-        document.addEventListener('DOMContentLoaded', loadEventData);
+        document.addEventListener('DOMContentLoaded', () => {
+            loadEventData();
+            
+            // Setup modal event listeners
+            document.getElementById('close-modal').onclick = closeImageModal;
+            
+            // Close modal when clicking outside the image
+            document.getElementById('image-modal').onclick = (e) => {
+                if (e.target.id === 'image-modal') {
+                    closeImageModal();
+                }
+            };
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeImageModal();
+                }
+            });
+        });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9690bd60346545bd',t:'MTc1NDE3MDg5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9690c74193e6f82a',t:'MTc1NDE3MTI5NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
