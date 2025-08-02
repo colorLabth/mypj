@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">รายละเอียดกิจกรรม - GameHub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#06b6d4'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Kanit', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .pulse-animation { animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo & Back Button -->
+                <div class="flex items-center space-x-4">
+                    <button onclick="goBack()" class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-xl">🎮</span>
+                        </div>
+                        <h1 class="text-2xl font-bold text-gray-900">GameHub</h1>
+                    </div>
+                </div>
+                
+                <!-- Share Button -->
+                <button onclick="shareEvent()" class="flex items-center space-x-2 bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+                    </svg>
+                    <span>แชร์</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Loading State -->
+    <div id="loading" class="flex items-center justify-center min-h-screen">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p class="text-gray-600">กำลังโหลดข้อมูล...</p>
+        </div>
+    </div>
+
+    <!-- Event Not Found -->
+    <div id="not-found" class="hidden flex items-center justify-center min-h-screen">
+        <div class="text-center">
+            <div class="text-6xl mb-4">😕</div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">ไม่พบกิจกรรมที่คุณค้นหา</h2>
+            <p class="text-gray-600 mb-6">กิจกรรมนี้อาจสิ้นสุดแล้วหรือถูกยกเลิก</p>
+            <button onclick="goBack()" class="bg-primary hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors">
+                กลับหน้าหลัก
+            </button>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 opacity-0 invisible transition-all duration-300"></div>
+    
+    <!-- Main Content -->
+    <main id="main-content" class="container mx-auto px-4 py-6 hidden">
+        <div id="event-details" class="bg-white rounded-xl shadow-md overflow-hidden">
+            <!-- Event header with cover image -->
+            <div class="relative">
+                <div id="event-cover" class="w-full h-48 md:h-64 bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
+                    <!-- Event icon will be inserted here by JS -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-4">
+                    <h1 id="event-title" class="text-2xl md:text-3xl font-bold text-white">ชื่อกิจกรรม</h1>
+                </div>
+                <!-- Status Badge -->
+                <div class="absolute top-4 right-4">
+                    <span id="event-status-badge" class="px-3 py-1 rounded-full text-sm font-medium bg-green-500 text-white pulse-animation">
+                        กำลังดำเนินการ
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Event info section -->
+            <div class="p-4 md:p-6">
+                <div class="flex flex-wrap items-center gap-4 mb-6">
+                    <div class="flex items-center">
+                        <div id="event-rating" class="text-yellow-400 text-xl">★★★★☆</div>
+                        <span id="event-rating-value" class="ml-1 text-gray-700 font-medium">0.0</span>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        <span id="participant-count">0</span> ผู้เข้าร่วม
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        <span id="view-count">0</span> ยอดเข้าชม
+                    </div>
+                    <div id="event-category" class="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full">
+                        แอคชั่น
+                    </div>
+                </div>
+                
+                <!-- Event Timeline -->
+                <div class="mb-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        ช่วงเวลากิจกรรม
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div class="flex items-center">
+                            <span class="text-gray-600 w-20">เริ่ม:</span>
+                            <span id="start-date" class="font-medium text-gray-900">-</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-gray-600 w-20">สิ้นสุด:</span>
+                            <span id="end-date" class="font-medium text-gray-900">-</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-gray-600 w-20">ระยะเวลา:</span>
+                            <span id="duration" class="font-medium text-gray-900">-</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-gray-600 w-20">สถานะ:</span>
+                            <span id="event-status" class="font-medium text-green-600">กำลังดำเนินการ</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Join/Register button -->
+                <div class="mb-8">
+                    <button id="join-button" class="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white py-3 rounded-lg font-medium flex items-center justify-center transition-all transform hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z" />
+                        </svg>
+                        เข้าร่วมกิจกรรม
+                    </button>
+                </div>
+
+                <!-- Event Description -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">เกี่ยวกับกิจกรรมนี้</h3>
+                    <div id="event-description" class="text-gray-700 leading-relaxed whitespace-pre-line">
+                        คำอธิบายกิจกรรม...
+                    </div>
+                </div>
+
+                <!-- Event Gallery -->
+                <div class="mb-8">
+                    <div class="flex justify-between items-center mb-3">
+                        <h2 class="text-lg font-semibold text-gray-800">ภาพกิจกรรม</h2>
+                    </div>
+                    <div class="relative">
+                        <div id="gallery-container" class="event-gallery flex space-x-4 overflow-x-auto pb-4 scrollable-area">
+                            <!-- Gallery will be inserted here by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Rules & Requirements -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">กฎและข้อกำหนด</h3>
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+                        <div class="space-y-2 text-sm text-gray-700">
+                            <div class="flex items-start">
+                                <svg class="w-4 h-4 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                </svg>
+                                ผู้เข้าร่วมต้องมีอายุ 13 ปีขึ้นไป
+                            </div>
+                            <div class="flex items-start">
+                                <svg class="w-4 h-4 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                </svg>
+                                ต้องมีการเชื่อมต่ออินเทอร์เน็ตที่เสถียร
+                            </div>
+                            <div class="flex items-start">
+                                <svg class="w-4 h-4 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                </svg>
+                                การเข้าร่วมเป็นไปตามเงื่อนไขของแต่ละกิจกรรม
+                            </div>
+                            <div class="flex items-start">
+                                <svg class="w-4 h-4 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                </svg>
+                                ห้ามใช้โปรแกรมช่วยเหลือหรือการโกง
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Information -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">ข้อมูลกิจกรรม</h3>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">หมวดหมู่:</span>
+                                <span id="sidebar-category" class="font-medium text-gray-900">-</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">ประเภท:</span>
+                                <span id="sidebar-subcategory" class="font-medium text-gray-900">-</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">ผู้จัด:</span>
+                                <span class="font-medium text-gray-900">GameHub Team</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">รางวัล:</span>
+                                <span class="font-medium text-gray-900">มีรางวัล</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">จำนวนรอบ:</span>
+                                <span class="font-medium text-gray-900">หลายรอบ</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">ยอดเข้าชม:</span>
+                                <span id="views-display" class="font-medium text-gray-900">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prizes & Rewards -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">รางวัลและของขวัญ</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-gradient-to-br from-yellow-100 to-orange-100 p-4 rounded-lg text-center">
+                            <div class="text-3xl mb-2">🥇</div>
+                            <h4 class="font-semibold text-gray-900 mb-1">อันดับ 1</h4>
+                            <p class="text-sm text-gray-600">รางวัลใหญ่ + เหรียญทอง</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-gray-100 to-gray-200 p-4 rounded-lg text-center">
+                            <div class="text-3xl mb-2">🥈</div>
+                            <h4 class="font-semibold text-gray-900 mb-1">อันดับ 2</h4>
+                            <p class="text-sm text-gray-600">รางวัลรอง + เหรียญเงิน</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-orange-100 to-red-100 p-4 rounded-lg text-center">
+                            <div class="text-3xl mb-2">🥉</div>
+                            <h4 class="font-semibold text-gray-900 mb-1">อันดับ 3</h4>
+                            <p class="text-sm text-gray-600">รางวัลที่ 3 + เหรียญทองแดง</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Event data structure
+        const eventData = {
+            "castle-defense": {
+                id: "castle-defense",
+                name: "Castle Defense Championship",
+                category: "แอคชั่น",
+                subcategory: "ป้องกันปราสาท",
+                description: `Castle Defense Championship เป็นการแข่งขันป้องกันปราสาทระดับโลก! มาร่วมแข่งขันกับผู้เล่นจากทั่วโลกและพิสูจน์ความสามารถในการวางกลยุทธ์
+
+รายละเอียดการแข่งขัน:
+🏆 การแข่งขันแบบ Tournament
+⚔️ ระบบการต่อสู้แบบ Real-time
+🎯 ชิงรางวัลรวมมูลค่า 100,000 บาท
+🌟 ได้รับเหรียญและตำแหน่งพิเศษ
+📅 จัดขึ้นทุกสุดสัปดาห์
+🎮 เล่นได้ทั้งมือถือและคอมพิวเตอร์
+
+มาร่วมเป็นส่วนหนึ่งของการแข่งขันที่ยิ่งใหญ่ที่สุดในปีนี้!`,
+                coverColor: "from-purple-400 to-pink-400",
+                rating: 4.8,
+                status: "กำลังดำเนินการ",
+                statusColor: "green",
+                startDate: "15 ธ.ค. 2024",
+                endDate: "22 ธ.ค. 2024",
+                duration: "7 วัน",
+                participants: 2847,
+                views: 15420
+            },
+            "speed-racing": {
+                id: "speed-racing",
+                name: "Speed Racing Grand Prix",
+                category: "แข่งรถ",
+                subcategory: "ความเร็วสูง",
+                description: `Speed Racing Grand Prix การแข่งขันรถแข่งที่เร็วที่สุดและตื่นเต้นที่สุด! ขับรถผ่านสนามแข่งระดับโลกและชิงแชมป์
+
+รายละเอียดการแข่งขัน:
+🏁 สนามแข่งระดับ Formula 1
+🚗 รถแข่งสุดล้ำจากทั่วโลก
+💨 ความเร็วสูงสุด 350 km/h
+🏆 รางวัลแชมป์โลก
+⏱️ การแข่งขันแบบ Time Trial
+🌍 ผู้เล่นจากทุกทวีป
+
+เตรียมตัวให้พร้อมสำหรับการแข่งขันที่จะทำให้หัวใจเต้นแรง!`,
+                coverColor: "from-green-400 to-blue-400",
+                rating: 4.6,
+                status: "มาแรง",
+                statusColor: "red",
+                startDate: "20 ธ.ค. 2024",
+                endDate: "27 ธ.ค. 2024",
+                duration: "7 วัน",
+                participants: 1923,
+                views: 12350
+            },
+            "mind-puzzle": {
+                id: "mind-puzzle",
+                name: "Mind Puzzle Challenge",
+                category: "ปริศนา",
+                subcategory: "ฝึกสมอง",
+                description: `Mind Puzzle Challenge การแข่งขันไขปริศนาที่จะทดสอบความฉลาดและไหวพริบของคุณ! แก้ปริศนาที่ซับซ้อนและชิงตำแหน่งนักคิดเลขหนึ่ง
+
+รายละเอียดการแข่งขัน:
+🧠 ปริศนาระดับ IQ สูง
+⏰ การแข่งขันแบบจับเวลา
+🎯 คะแนนสะสมจากหลายรอบ
+🏅 รางวัลสำหรับผู้ชนะ
+📊 ระบบอันดับแบบ Real-time
+🌟 ได้รับใบประกาศนียบัตร
+
+ท้าทายสมองของคุณและพิสูจน์ว่าคุณคือนักคิดที่เก่งที่สุด!`,
+                coverColor: "from-orange-400 to-red-400",
+                rating: 4.9,
+                status: "แนะนำ",
+                statusColor: "blue",
+                startDate: "18 ธ.ค. 2024",
+                endDate: "25 ธ.ค. 2024",
+                duration: "7 วัน",
+                participants: 3456,
+                views: 18750
+            },
+            "soccer-champion": {
+                id: "soccer-champion",
+                name: "Soccer Champion League",
+                category: "กีฬา",
+                subcategory: "ฟุตบอล",
+                description: `Soccer Champion League การแข่งขันฟุตบอลระดับโลกที่จะทำให้คุณได้สัมผัสความตื่นเต้นของการเป็นแชมป์! จัดการทีมและนำพาสู่ชัยชนะ
+
+รายละเอียดการแข่งขัน:
+⚽ ทีมจากทั่วโลกกว่า 100 ทีม
+🏟️ สนามแข่งระดับ World Cup
+👥 การแข่งขันแบบทีม
+🏆 ถ้วยแชมป์โลก
+📺 ถ่ายทอดสดทุกแมตช์
+🎊 งานเฉลิมฉลองแชมป์
+
+มาร่วมเป็นส่วนหนึ่งของการแข่งขันฟุตบอลที่ยิ่งใหญ่ที่สุด!`,
+                coverColor: "from-indigo-400 to-purple-400",
+                rating: 4.7,
+                status: "กำลังดำเนินการ",
+                statusColor: "yellow",
+                startDate: "22 ธ.ค. 2024",
+                endDate: "29 ธ.ค. 2024",
+                duration: "7 วัน",
+                participants: 4521,
+                views: 22100
+            }
+        };
+
+        // Get event ID from URL parameter
+        function getEventIdFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+
+        // Generate stars display
+        function generateStars(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            let stars = '';
+            
+            for (let i = 0; i < 5; i++) {
+                if (i < fullStars) {
+                    stars += '★';
+                } else if (i === fullStars && hasHalfStar) {
+                    stars += '★';
+                } else {
+                    stars += '☆';
+                }
+            }
+            
+            return stars;
+        }
+
+        // Generate gallery images based on event ID
+        function generateGallery(eventId, coverColor) {
+            const gallery = [];
+            const colors = [
+                'from-indigo-400 to-purple-500',
+                'from-blue-400 to-indigo-500', 
+                'from-green-400 to-teal-500',
+                'from-purple-400 to-pink-500',
+                'from-orange-400 to-red-500',
+                'from-yellow-400 to-orange-500'
+            ];
+            
+            // Generate 4-6 gallery images per event
+            const numImages = 4 + (eventId.length % 3);
+            
+            for (let i = 0; i < numImages; i++) {
+                const colorIndex = (eventId.charCodeAt(i % eventId.length) + i) % colors.length;
+                gallery.push({
+                    color: colors[colorIndex],
+                    title: `ภาพกิจกรรม ${i + 1}`
+                });
+            }
+            
+            return gallery;
+        }
+
+        // Load and display event data
+        function loadEventData() {
+            const eventId = getEventIdFromURL();
+            
+            if (!eventId || !eventData[eventId]) {
+                // Show not found page
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('not-found').classList.remove('hidden');
+                return;
+            }
+
+            const event = eventData[eventId];
+
+            // Update page title
+            document.getElementById('page-title').textContent = `${event.name} - GameHub`;
+            document.title = `${event.name} - GameHub`;
+
+            // Update event cover
+            const eventCover = document.getElementById('event-cover');
+            eventCover.className = `w-full h-48 md:h-64 bg-gradient-to-r ${event.coverColor} flex items-center justify-center`;
+
+            // Update event title
+            document.getElementById('event-title').textContent = event.name;
+
+            // Update status badge
+            const statusBadge = document.getElementById('event-status-badge');
+            const statusColors = {
+                'green': 'bg-green-500',
+                'red': 'bg-red-500',
+                'blue': 'bg-blue-500',
+                'yellow': 'bg-yellow-500'
+            };
+            statusBadge.className = `px-3 py-1 rounded-full text-sm font-medium ${statusColors[event.statusColor]} text-white pulse-animation`;
+            statusBadge.textContent = event.status;
+
+            // Update rating
+            document.getElementById('event-rating').textContent = generateStars(event.rating);
+            document.getElementById('event-rating-value').textContent = event.rating.toFixed(1);
+
+            // Update stats
+            document.getElementById('participant-count').textContent = event.participants.toLocaleString();
+            document.getElementById('view-count').textContent = event.views.toLocaleString();
+            document.getElementById('views-display').textContent = event.views.toLocaleString();
+
+            // Update category
+            document.getElementById('event-category').textContent = event.category;
+
+            // Update timeline
+            document.getElementById('start-date').textContent = event.startDate;
+            document.getElementById('end-date').textContent = event.endDate;
+            document.getElementById('duration').textContent = event.duration;
+            document.getElementById('event-status').textContent = event.status;
+
+            // Update description
+            document.getElementById('event-description').textContent = event.description;
+
+            // Update sidebar info
+            document.getElementById('sidebar-category').textContent = event.category;
+            document.getElementById('sidebar-subcategory').textContent = event.subcategory;
+
+            // Update join button
+            const joinBtn = document.getElementById('join-button');
+            joinBtn.onclick = () => {
+                alert(`เข้าร่วมกิจกรรม: ${event.name}\n\nคุณได้ลงทะเบียนเข้าร่วมกิจกรรมเรียบร้อยแล้ว!\nเราจะส่งข้อมูลเพิ่มเติมให้คุณทางอีเมล`);
+            };
+
+            // Load gallery
+            loadGallery(eventId, event.coverColor);
+
+            // Show main content
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('main-content').classList.remove('hidden');
+        }
+
+        // Load gallery for the event
+        function loadGallery(eventId, coverColor) {
+            const gallery = generateGallery(eventId, coverColor);
+            const container = document.getElementById('gallery-container');
+            
+            container.innerHTML = gallery.map(image => `
+                <div class="gallery-item flex-shrink-0 w-60 h-32 md:h-40 bg-gray-200 rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
+                    <div class="w-full h-full bg-gradient-to-br ${image.color} flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Navigation functions
+        function goBack() {
+            if (document.referrer && document.referrer.includes(window.location.hostname)) {
+                window.history.back();
+            } else {
+                window.location.href = 'https://colorlabth.github.io/mypj/';
+            }
+        }
+
+        function shareEvent() {
+            const eventId = getEventIdFromURL();
+            const event = eventData[eventId];
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: event.name,
+                    text: `มาร่วมกิจกรรม ${event.name} กันเถอะ! ${event.category} • ${event.subcategory}`,
+                    url: window.location.href
+                });
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alert('คัดลอกลิงก์แล้ว!');
+                });
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', loadEventData);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96909671a485a62b',t:'MTc1NDE2OTI5NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
