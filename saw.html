@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">รายละเอียดเกม - GameHub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#06b6d4'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Kanit', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo & Back Button -->
+                <div class="flex items-center space-x-4">
+                    <button onclick="goBack()" class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-xl">🎮</span>
+                        </div>
+                        <h1 class="text-2xl font-bold text-gray-900">GameHub</h1>
+                    </div>
+                </div>
+                
+                <!-- Share Button -->
+                <button onclick="shareGame()" class="flex items-center space-x-2 bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+                    </svg>
+                    <span>แชร์</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Loading State -->
+    <div id="loading" class="flex items-center justify-center min-h-screen">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p class="text-gray-600">กำลังโหลดข้อมูล...</p>
+        </div>
+    </div>
+
+    <!-- Game Not Found -->
+    <div id="not-found" class="hidden flex items-center justify-center min-h-screen">
+        <div class="text-center">
+            <div class="text-6xl mb-4">😕</div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">ไม่พบเกมที่คุณค้นหา</h2>
+            <p class="text-gray-600 mb-6">เกมหรือกิจกรรมนี้อาจถูกลบหรือย้ายไปแล้ว</p>
+            <button onclick="goBack()" class="bg-primary hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors">
+                กลับหน้าหลัก
+            </button>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 opacity-0 invisible transition-all duration-300"></div>
+    
+    <!-- Main Content -->
+    <main id="main-content" class="container mx-auto px-4 py-6 hidden">
+        <div id="game-details" class="bg-white rounded-xl shadow-md overflow-hidden">
+            <!-- Game header with cover image -->
+            <div class="relative">
+                <div id="game-cover" class="w-full h-48 md:h-64 bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
+                    <!-- Game icon will be inserted here by JS -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13.92 3.845a19.361 19.361 0 01-6.3 1.98C6.765 5.942 5.89 6 5 6a4 4 0 00-.504 7.969 15.974 15.974 0 001.271 3.341c.397.77 1.342 1.27 2.233 1.69.26.122.52.236.78.344a4 4 0 105.832-5.708 15.973 15.973 0 00.979-2.989 4 4 0 00-1.671-6.802z" />
+                    </svg>
+                </div>
+                <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-4">
+                    <h1 id="game-title" class="text-2xl md:text-3xl font-bold text-white">ชื่อเกม</h1>
+                </div>
+            </div>
+            
+            <!-- Game info section -->
+            <div class="p-4 md:p-6">
+                <div class="flex flex-wrap items-center gap-4 mb-6">
+                    <div class="flex items-center">
+                        <div id="game-rating" class="text-yellow-400 text-xl">★★★★☆</div>
+                        <span id="game-rating-value" class="ml-1 text-gray-700 font-medium">0.0</span>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        <span id="review-count">0</span> รีวิว
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        <span id="download-count">0</span> ดาวน์โหลด
+                    </div>
+                    <div id="game-category" class="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full">
+                        แอคชั่น
+                    </div>
+                </div>
+                
+                <!-- Download/Play button -->
+                <div class="mb-8">
+                    <button id="download-button" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-medium flex items-center justify-center transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                        ดาวน์โหลด
+                    </button>
+                </div>
+
+                <!-- Game Description -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">เกี่ยวกับเกมนี้</h3>
+                    <div id="game-description" class="text-gray-700 leading-relaxed whitespace-pre-line">
+                        คำอธิบายเกม...
+                    </div>
+                </div>
+
+                <!-- Screenshots/Gallery -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">ภาพตัวอย่าง</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <div class="aspect-video bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg flex items-center justify-center">
+                            <span class="text-gray-500 text-sm">ภาพตัวอย่าง 1</span>
+                        </div>
+                        <div class="aspect-video bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg flex items-center justify-center">
+                            <span class="text-gray-500 text-sm">ภาพตัวอย่าง 2</span>
+                        </div>
+                        <div class="aspect-video bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg flex items-center justify-center">
+                            <span class="text-gray-500 text-sm">ภาพตัวอย่าง 3</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game Information -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">ข้อมูลเกม</h3>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">หมวดหมู่:</span>
+                                <span id="sidebar-category" class="font-medium text-gray-900">-</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">ประเภท:</span>
+                                <span id="sidebar-subcategory" class="font-medium text-gray-900">-</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">ขนาด:</span>
+                                <span class="font-medium text-gray-900">25 MB</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">เวอร์ชัน:</span>
+                                <span class="font-medium text-gray-900">1.0.0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">อัปเดต:</span>
+                                <span class="font-medium text-gray-900">วันนี้</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">ยอดเข้าชม:</span>
+                                <span id="views-display" class="font-medium text-gray-900">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Requirements -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">ความต้องการระบบ</h3>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="space-y-2 text-sm text-gray-700">
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                เบราว์เซอร์ที่รองรับ HTML5
+                            </div>
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                RAM อย่างน้อย 2 GB
+                            </div>
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                การเชื่อมต่ออินเทอร์เน็ต
+                            </div>
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                หน่วยความจำว่าง 50 MB
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Games -->
+        <div class="mt-8">
+            <h3 class="text-xl font-bold text-gray-900 mb-6">เกมที่เกี่ยวข้อง</h3>
+            <div id="related-games" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <!-- Related games will be populated by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Game data structure - same as main page
+        const gameData = {
+            // Activity Games (Events)
+            "castle-defense": {
+                id: "castle-defense",
+                name: "Castle Defense",
+                category: "แอคชั่น",
+                subcategory: "ป้องกันปราสาท",
+                description: `Castle Defense เป็นเกมป้องกันปราสาทที่ท้าทายความคิดเชิงกลยุทธ์ของคุณ! สร้างหอคอยป้องกันเพื่อต่อสู้กับศัตรูที่บุกเข้ามา
+
+ฟีเจอร์เด่น:
+• หอคอยป้องกันมากกว่า 15 ชนิด
+• ศัตรูหลากหลายรูปแบบ
+• ระบบอัพเกรดหอคอย
+• ด่านมากกว่า 50 ด่าน
+• กราฟิกสวยงามคมชัด
+• เล่นได้ทั้งออนไลน์และออฟไลน์
+
+เหมาะสำหรับผู้เล่นที่ชื่นชอบเกมแนวกลยุทธ์และการวางแผน!`,
+                coverColor: "from-purple-400 to-pink-400",
+                rating: 4.8,
+                status: "กำลังดำเนินการ",
+                statusColor: "green",
+                type: "event",
+                featured: true,
+                popular: true
+            },
+            "speed-racing": {
+                id: "speed-racing",
+                name: "Speed Racing",
+                category: "แข่งรถ",
+                subcategory: "ความเร็วสูง",
+                description: `Speed Racing เป็นเกมแข่งรถสุดมันส์ที่จะทำให้คุณรู้สึกตื่นเต้นไปกับความเร็วสูง! ขับรถผ่านเส้นทางที่ท้าทายและแข่งขันกับคู่แข่งที่แข็งแกร่ง
+
+ฟีเจอร์เด่น:
+• รถแข่งมากกว่า 25 คัน
+• สนามแข่งหลากหลาย
+• ระบบปรับแต่งรถ
+• โหมดแข่งขันออนไลน์
+• กราฟิก 3D สมจริง
+• ฟิสิกส์การขับขี่ที่แม่นยำ
+
+เหมาะสำหรับผู้ที่ชื่นชอบความเร็วและการแข่งขัน!`,
+                coverColor: "from-green-400 to-blue-400",
+                rating: 4.6,
+                status: "มาแรง",
+                statusColor: "red",
+                type: "event",
+                featured: true,
+                popular: true
+            },
+            "mind-puzzle": {
+                id: "mind-puzzle",
+                name: "Mind Puzzle",
+                category: "ปริศนา",
+                subcategory: "ฝึกสมอง",
+                description: `Mind Puzzle เป็นเกมปริศนาที่จะช่วยฝึกสมองและพัฒนาความคิดเชิงตรรกะของคุณ ผ่านปริศนาที่หลากหลายและท้าทาย
+
+ฟีเจอร์เด่น:
+• ปริศนามากกว่า 200 ข้อ
+• หลายประเภทปริศนา
+• ระบบคะแนนและอันดับ
+• โหมดแข่งขันเวลา
+• กราฟิกสวยงามเรียบง่าย
+• เล่นได้ทุกที่ทุกเวลา
+
+เหมาะสำหรับทุกเพศทุกวัยที่ต้องการฝึกสมอง!`,
+                coverColor: "from-orange-400 to-red-400",
+                rating: 4.9,
+                status: "แนะนำ",
+                statusColor: "blue",
+                type: "event",
+                featured: true,
+                popular: true
+            },
+            "soccer-champion": {
+                id: "soccer-champion",
+                name: "Soccer Champion",
+                category: "กีฬา",
+                subcategory: "ฟุตบอล",
+                description: `Soccer Champion เป็นเกมฟุตบอลที่จะทำให้คุณได้สัมผัสประสบการณ์การเป็นแชมป์ฟุตบอลโลก! จัดการทีมและแข่งขันในลีกต่างๆ
+
+ฟีเจอร์เด่น:
+• ทีมมากกว่า 100 ทีม
+• ลีกและทัวร์นาเมนต์หลากหลาย
+• ระบบจัดการทีม
+• นักเตะดาวดังจริง
+• กราฟิก 3D สมจริง
+• โหมดแข่งขันออนไลน์
+
+เหมาะสำหรับแฟนฟุตบอลทุกคน!`,
+                coverColor: "from-indigo-400 to-purple-400",
+                rating: 4.7,
+                status: "กำลังดำเนินการ",
+                statusColor: "yellow",
+                type: "event",
+                featured: true,
+                popular: true
+            },
+
+            // Recommended Games
+            "target-shooter": {
+                id: "target-shooter",
+                name: "Target Shooter",
+                category: "แอคชั่น",
+                subcategory: "ยิงเป้า",
+                description: `Target Shooter เป็นเกมยิงเป้าที่ท้าทายความแม่นยำและสมาธิของคุณ ยิงเป้าหมายต่างๆ ด้วยอาวุธที่หลากหลาย
+
+ฟีเจอร์เด่น:
+• อาวุธมากกว่า 20 ชนิด
+• เป้าหมายหลากหลายรูปแบบ
+• ระบบอัพเกรดอาวุธ
+• โหมดแข่งขันเวลา
+• กราฟิกสมจริง
+• ฟิสิกส์การยิงที่แม่นยำ
+
+เหมาะสำหรับผู้ที่ชื่นชอบเกมยิงและความท้าทาย!`,
+                coverColor: "from-cyan-400 to-blue-400",
+                type: "game",
+                views: 0
+            },
+            "gem-collector": {
+                id: "gem-collector",
+                name: "Gem Collector",
+                category: "ผจญภัย",
+                subcategory: "เก็บอัญมณี",
+                description: `Gem Collector เป็นเกมผจญภัยที่คุณจะได้สำรวจถ้ำลึกลับเพื่อค้นหาอัญมณีล้ำค่า หลีกเลี่ยงกับดักและศัตรูที่อันตราย
+
+ฟีเจอร์เด่น:
+• ถ้ำมากกว่า 100 แห่ง
+• อัญมณีหลากหลายชนิด
+• กับดักและปริศนา
+• ระบบอัพเกรดเครื่องมือ
+• กราฟิกสวยงาม
+• เสียงประกอบสมจริง
+
+เหมาะสำหรับผู้ที่ชื่นชอบการผจญภัยและสำรวจ!`,
+                coverColor: "from-pink-400 to-red-400",
+                type: "game",
+                views: 0
+            },
+            "cooking-master": {
+                id: "cooking-master",
+                name: "Cooking Master",
+                category: "จำลองสถานการณ์",
+                subcategory: "ทำอาหาร",
+                description: `Cooking Master เป็นเกมทำอาหารที่จะทำให้คุณได้สัมผัสประสบการณ์การเป็นเชฟมืออาชีพ ปรุงอาหารอร่อยให้กับลูกค้า
+
+ฟีเจอร์เด่น:
+• สูตรอาหารมากกว่า 200 เมนู
+• ร้านอาหารหลากหลายสไตล์
+• ระบบอัพเกรดครัว
+• ลูกค้าที่หลากหลาย
+• กราฟิกน่ารักสดใส
+• เล่นง่ายสนุกทุกวัย
+
+เหมาะสำหรับทุกคนที่ชื่นชอบการทำอาหาร!`,
+                coverColor: "from-yellow-400 to-orange-400",
+                type: "game",
+                views: 0
+            },
+            "star-quest": {
+                id: "star-quest",
+                name: "Star Quest",
+                category: "ผจญภัย",
+                subcategory: "อวกาศ",
+                description: `Star Quest เป็นเกมผจญภัยในอวกาศที่จะพาคุณไปสำรวจกาแล็กซี่อันกว้างใหญ่ ค้นพบดาวเคราะห์ใหม่และต่อสู้กับมนุษย์ต่างดาว
+
+ฟีเจอร์เด่น:
+• ดาวเคราะห์มากกว่า 50 ดวง
+• ยานอวกาศหลากหลาย
+• ระบบการต่อสู้ในอวกาศ
+• เทคโนโลยีอนาคต
+• กราฟิก 3D สวยงาม
+• เนื้อเรื่องที่น่าติดตาม
+
+เหมาะสำหรับผู้ที่ชื่นชอบไซไฟและการผจญภัย!`,
+                coverColor: "from-green-400 to-teal-400",
+                type: "game",
+                views: 0
+            },
+            "space-adventure": {
+                id: "space-adventure",
+                name: "Space Adventure",
+                category: "แอคชั่น",
+                subcategory: "อวกาศ",
+                description: `Space Adventure เป็นเกมแอคชั่นในอวกาศที่เต็มไปด้วยการต่อสู้และการผจญภัย บินยานรบผ่านสนามรบในอวกาศ
+
+ฟีเจอร์เด่น:
+• ยานรบมากกว่า 15 ลำ
+• อาวุธและโล่พลังงาน
+• ศัตรูมนุษย์ต่างดาว
+• ภารกิจหลากหลาย
+• กราฟิกสุดอลังการ
+• เสียงเอฟเฟกต์สมจริง
+
+เหมาะสำหรับผู้ที่ชื่นชอบเกมแอคชั่นและอวกาศ!`,
+                coverColor: "from-blue-400 to-purple-400",
+                type: "game",
+                views: 0
+            },
+            "art-creator": {
+                id: "art-creator",
+                name: "Art Creator",
+                category: "สร้างสรรค์",
+                subcategory: "วาดรูป",
+                description: `Art Creator เป็นเกมสร้างสรรค์ที่จะปลดปล่อยความคิดสร้างสรรค์ของคุณ วาดรูป ระบายสี และสร้างผลงานศิลปะที่สวยงาม
+
+ฟีเจอร์เด่น:
+• เครื่องมือวาดรูปครบครัน
+• สีและพู่กันหลากหลาย
+• เทมเพลตและลวดลาย
+• แชร์ผลงานกับเพื่อน
+• บันทึกและส่งออกรูป
+• เล่นง่ายเหมาะทุกวัย
+
+เหมาะสำหรับผู้ที่ชื่นชอบศิลปะและการสร้างสรรค์!`,
+                coverColor: "from-purple-400 to-pink-400",
+                type: "game",
+                views: 0
+            }
+        };
+
+        // Get game ID from URL parameter
+        function getGameIdFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+
+        // Generate stars display
+        function generateStars(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            let stars = '';
+            
+            for (let i = 0; i < 5; i++) {
+                if (i < fullStars) {
+                    stars += '★';
+                } else if (i === fullStars && hasHalfStar) {
+                    stars += '★';
+                } else {
+                    stars += '☆';
+                }
+            }
+            
+            return stars;
+        }
+
+        // Load and display game data
+        function loadGameData() {
+            const gameId = getGameIdFromURL();
+            
+            if (!gameId || !gameData[gameId]) {
+                // Show not found page
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('not-found').classList.remove('hidden');
+                return;
+            }
+
+            const game = gameData[gameId];
+            
+            // Load saved view count
+            const savedViews = localStorage.getItem(`game_views_${gameId}`) || 0;
+            game.views = parseInt(savedViews);
+
+            // Update page title
+            document.getElementById('page-title').textContent = `${game.name} - GameHub`;
+            document.title = `${game.name} - GameHub`;
+
+            // Update game cover
+            const gameCover = document.getElementById('game-cover');
+            gameCover.className = `w-full h-48 md:h-64 bg-gradient-to-r ${game.coverColor} flex items-center justify-center`;
+
+            // Update game title
+            document.getElementById('game-title').textContent = game.name;
+
+            // Update rating
+            if (game.rating) {
+                document.getElementById('game-rating').textContent = generateStars(game.rating);
+                document.getElementById('game-rating-value').textContent = game.rating.toFixed(1);
+            } else {
+                document.getElementById('game-rating').textContent = '☆☆☆☆☆';
+                document.getElementById('game-rating-value').textContent = 'N/A';
+            }
+
+            // Update stats
+            document.getElementById('review-count').textContent = Math.floor(Math.random() * 1000) + 50;
+            document.getElementById('download-count').textContent = (Math.floor(Math.random() * 10000) + 1000).toLocaleString();
+            document.getElementById('views-display').textContent = game.views.toLocaleString();
+
+            // Update category
+            document.getElementById('game-category').textContent = game.category;
+
+            // Update description
+            document.getElementById('game-description').textContent = game.description;
+
+            // Update sidebar info
+            document.getElementById('sidebar-category').textContent = game.category;
+            document.getElementById('sidebar-subcategory').textContent = game.subcategory;
+
+            // Update download button
+            const downloadBtn = document.getElementById('download-button');
+            if (game.type === 'event') {
+                downloadBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd" />
+                    </svg>
+                    เข้าร่วมกิจกรรม
+                `;
+                downloadBtn.onclick = () => alert('เข้าร่วมกิจกรรม: ' + game.name);
+            } else {
+                downloadBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                    ดาวน์โหลด
+                `;
+                downloadBtn.onclick = () => alert('เริ่มดาวน์โหลดเกม: ' + game.name);
+            }
+
+            // Load related games
+            loadRelatedGames(game);
+
+            // Show main content
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('main-content').classList.remove('hidden');
+        }
+
+        // Load related games
+        function loadRelatedGames(currentGame) {
+            const relatedContainer = document.getElementById('related-games');
+            let relatedGames = Object.values(gameData)
+                .filter(game => game.id !== currentGame.id && game.category === currentGame.category)
+                .slice(0, 6);
+
+            if (relatedGames.length === 0) {
+                // If no games in same category, show random games
+                const allOtherGames = Object.values(gameData).filter(game => game.id !== currentGame.id);
+                relatedGames = allOtherGames.slice(0, 6);
+            }
+
+            relatedContainer.innerHTML = relatedGames.map(game => `
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover cursor-pointer" onclick="goToGame('${game.id}')">
+                    <div class="h-24 bg-gradient-to-br ${game.coverColor} flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">${game.name}</span>
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-semibold text-xs text-gray-900 mb-1">${game.name}</h4>
+                        <p class="text-gray-600 text-xs">${game.category}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Navigation functions
+        function goBack() {
+            if (document.referrer && document.referrer.includes(window.location.hostname)) {
+                window.history.back();
+            } else {
+                window.location.href = 'https://colorlabth.github.io/mypj/';
+            }
+        }
+
+        function goToGame(gameId) {
+            const game = gameData[gameId];
+            if (game.type === 'event') {
+                window.location.href = `https://colorlabth.github.io/mypj/event.html?id=${gameId}`;
+            } else {
+                window.location.href = `https://colorlabth.github.io/mypj/detail.html?id=${gameId}`;
+            }
+        }
+
+        function shareGame() {
+            const gameId = getGameIdFromURL();
+            const game = gameData[gameId];
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: game.name,
+                    text: `มาเล่น ${game.name} กันเถอะ! ${game.category} • ${game.subcategory}`,
+                    url: window.location.href
+                });
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alert('คัดลอกลิงก์แล้ว!');
+                });
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', loadGameData);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'968e9cf2e50110f8',t:'MTc1NDE0ODU5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
