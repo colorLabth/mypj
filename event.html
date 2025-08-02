@@ -187,31 +187,8 @@
                 <div class="mb-8">
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">กฎและข้อกำหนด</h3>
                     <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
-                        <div class="space-y-2 text-sm text-gray-700">
-                            <div class="flex items-start">
-                                <svg class="w-4 h-4 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                                </svg>
-                                ผู้เข้าร่วมต้องมีอายุ 13 ปีขึ้นไป
-                            </div>
-                            <div class="flex items-start">
-                                <svg class="w-4 h-4 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                                </svg>
-                                ต้องมีการเชื่อมต่ออินเทอร์เน็ตที่เสถียร
-                            </div>
-                            <div class="flex items-start">
-                                <svg class="w-4 h-4 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                                </svg>
-                                การเข้าร่วมเป็นไปตามเงื่อนไขของแต่ละกิจกรรม
-                            </div>
-                            <div class="flex items-start">
-                                <svg class="w-4 h-4 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                                </svg>
-                                ห้ามใช้โปรแกรมช่วยเหลือหรือการโกง
-                            </div>
+                        <div id="event-rules" class="space-y-2 text-sm text-gray-700">
+                            <!-- Rules will be inserted here by JS based on event ID -->
                         </div>
                     </div>
                 </div>
@@ -219,57 +196,91 @@
                 <!-- Event Information -->
                 <div class="mb-8">
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">ข้อมูลกิจกรรม</h3>
-                    <div class="bg-gray-50 rounded-lg p-4">
-                        <div class="grid grid-cols-2 gap-4 text-sm">
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">หมวดหมู่:</span>
-                                <span id="sidebar-category" class="font-medium text-gray-900">-</span>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-200">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="text-gray-600 font-medium">หมวดหมู่</span>
+                                    </div>
+                                    <span id="sidebar-category" class="font-bold text-gray-900 text-lg">-</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="text-gray-600 font-medium">ประเภท</span>
+                                    </div>
+                                    <span id="sidebar-subcategory" class="font-bold text-gray-900 text-lg">-</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                            <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="text-gray-600 font-medium">ผู้เข้าร่วม</span>
+                                    </div>
+                                    <span id="participants-display" class="font-bold text-gray-900 text-lg">0</span>
+                                </div>
                             </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">ประเภท:</span>
-                                <span id="sidebar-subcategory" class="font-medium text-gray-900">-</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">ผู้จัด:</span>
-                                <span class="font-medium text-gray-900">GameHub Team</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">รางวัล:</span>
-                                <span class="font-medium text-gray-900">มีรางวัล</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">จำนวนรอบ:</span>
-                                <span class="font-medium text-gray-900">หลายรอบ</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">ยอดเข้าชม:</span>
-                                <span id="views-display" class="font-medium text-gray-900">0</span>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-3">
+                                            <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="text-gray-600 font-medium">ยอดเข้าชม</span>
+                                    </div>
+                                    <span id="views-display" class="font-bold text-gray-900 text-lg">0</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                                            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="text-gray-600 font-medium">รหัสกิจกรรม</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span id="event-code" class="font-bold text-gray-900 text-lg font-mono">-</span>
+                                        <button id="copy-code-btn" class="p-1 text-blue-600 hover:text-blue-800 transition-colors" title="คัดลอกรหัส">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mr-3">
+                                            <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="text-gray-600 font-medium">รางวัล</span>
+                                    </div>
+                                    <span class="font-bold text-green-600 text-lg">มีรางวัล</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Prizes & Rewards -->
-                <div class="mb-8">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">รางวัลและของขวัญ</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="bg-gradient-to-br from-yellow-100 to-orange-100 p-4 rounded-lg text-center">
-                            <div class="text-3xl mb-2">🥇</div>
-                            <h4 class="font-semibold text-gray-900 mb-1">อันดับ 1</h4>
-                            <p class="text-sm text-gray-600">รางวัลใหญ่ + เหรียญทอง</p>
-                        </div>
-                        <div class="bg-gradient-to-br from-gray-100 to-gray-200 p-4 rounded-lg text-center">
-                            <div class="text-3xl mb-2">🥈</div>
-                            <h4 class="font-semibold text-gray-900 mb-1">อันดับ 2</h4>
-                            <p class="text-sm text-gray-600">รางวัลรอง + เหรียญเงิน</p>
-                        </div>
-                        <div class="bg-gradient-to-br from-orange-100 to-red-100 p-4 rounded-lg text-center">
-                            <div class="text-3xl mb-2">🥉</div>
-                            <h4 class="font-semibold text-gray-900 mb-1">อันดับ 3</h4>
-                            <p class="text-sm text-gray-600">รางวัลที่ 3 + เหรียญทองแดง</p>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </main>
@@ -301,7 +312,14 @@
                 endDate: "22 ธ.ค. 2024",
                 duration: "7 วัน",
                 participants: 2847,
-                views: 15420
+                views: 15420,
+                code: "CD2024",
+                rules: [
+                    "ผู้เข้าร่วมต้องมีอายุ 13 ปีขึ้นไป",
+                    "ต้องมีการเชื่อมต่ออินเทอร์เน็ตที่เสถียร",
+                    "ห้ามใช้โปรแกรมช่วยเหลือหรือการโกง",
+                    "การแข่งขันเป็นแบบ Real-time ไม่สามารถหยุดพักได้"
+                ]
             },
             "speed-racing": {
                 id: "speed-racing",
@@ -327,7 +345,13 @@
                 endDate: "27 ธ.ค. 2024",
                 duration: "7 วัน",
                 participants: 1923,
-                views: 12350
+                views: 12350,
+                code: "SR2024",
+                rules: [
+                    "ผู้เข้าร่วมต้องมีอายุ 16 ปีขึ้นไป",
+                    "ต้องมีการเชื่อมต่ออินเทอร์เน็ตที่เสถียร",
+                    "การเข้าร่วมเป็นไปตามเงื่อนไขของแต่ละกิจกรรม"
+                ]
             },
             "mind-puzzle": {
                 id: "mind-puzzle",
@@ -353,7 +377,15 @@
                 endDate: "25 ธ.ค. 2024",
                 duration: "7 วัน",
                 participants: 3456,
-                views: 18750
+                views: 18750,
+                code: "MP2024",
+                rules: [
+                    "ผู้เข้าร่วมต้องมีอายุ 10 ปีขึ้นไป",
+                    "ต้องมีการเชื่อมต่ออินเทอร์เน็ตที่เสถียร",
+                    "การเข้าร่วมเป็นไปตามเงื่อนไขของแต่ละกิจกรรม",
+                    "ห้ามใช้โปรแกรมช่วยเหลือหรือการโกง",
+                    "แต่ละข้อต้องตอบภายในเวลาที่กำหนด"
+                ]
             },
             "soccer-champion": {
                 id: "soccer-champion",
@@ -379,7 +411,14 @@
                 endDate: "29 ธ.ค. 2024",
                 duration: "7 วัน",
                 participants: 4521,
-                views: 22100
+                views: 22100,
+                code: "SC2024",
+                rules: [
+                    "ผู้เข้าร่วมต้องมีอายุ 13 ปีขึ้นไป",
+                    "ต้องมีการเชื่อมต่ออินเทอร์เน็ตที่เสถียร",
+                    "การแข่งขันเป็นแบบทีม (3-5 คน)",
+                    "ห้ามใช้โปรแกรมช่วยเหลือหรือการโกง"
+                ]
             }
         };
 
@@ -477,6 +516,7 @@
             document.getElementById('participant-count').textContent = event.participants.toLocaleString();
             document.getElementById('view-count').textContent = event.views.toLocaleString();
             document.getElementById('views-display').textContent = event.views.toLocaleString();
+            document.getElementById('participants-display').textContent = event.participants.toLocaleString();
 
             // Update category
             document.getElementById('event-category').textContent = event.category;
@@ -493,6 +533,26 @@
             // Update sidebar info
             document.getElementById('sidebar-category').textContent = event.category;
             document.getElementById('sidebar-subcategory').textContent = event.subcategory;
+
+            // Update event code
+            document.getElementById('event-code').textContent = event.code;
+            
+            // Setup copy code button
+            document.getElementById('copy-code-btn').onclick = () => {
+                navigator.clipboard.writeText(event.code).then(() => {
+                    const btn = document.getElementById('copy-code-btn');
+                    const originalHTML = btn.innerHTML;
+                    btn.innerHTML = '<svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                    }, 2000);
+                }).catch(() => {
+                    alert('ไม่สามารถคัดลอกได้');
+                });
+            };
+
+            // Load rules
+            loadEventRules(event.rules);
 
             // Update join button
             const joinBtn = document.getElementById('join-button');
@@ -520,6 +580,20 @@
                             <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
                         </svg>
                     </div>
+                </div>
+            `).join('');
+        }
+
+        // Load event rules
+        function loadEventRules(rules) {
+            const container = document.getElementById('event-rules');
+            
+            container.innerHTML = rules.map(rule => `
+                <div class="flex items-start">
+                    <svg class="w-4 h-4 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                    </svg>
+                    ${rule}
                 </div>
             `).join('');
         }
@@ -554,5 +628,5 @@
         // Initialize page
         document.addEventListener('DOMContentLoaded', loadEventData);
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96909671a485a62b',t:'MTc1NDE2OTI5NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9690a363a3e845ca',t:'MTc1NDE2OTgyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
