@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub - ดาวน์โหลดเกมฟรี</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#06b6d4'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Kanit', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .banner-slide { animation: slideShow 15s infinite; }
+        @keyframes slideShow {
+            0%, 33% { opacity: 1; }
+            34%, 66% { opacity: 0; }
+            67%, 100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">🎮</span>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-900">GameHub</h1>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="hidden md:flex flex-1 max-w-lg mx-8">
+                    <div class="relative w-full">
+                        <input type="text" placeholder="ค้นหาเกมที่คุณชื่นชอบ..." 
+                               class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center">
+                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Menu Button -->
+                <button class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Menu -->
+    <div id="sidebar" class="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-50">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-xl font-bold text-gray-900">เมนู</h2>
+                <button onclick="closeSidebar()" class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <nav class="space-y-4">
+                <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v6H8V5z"></path>
+                    </svg>
+                    <span class="font-medium text-gray-900">เมนูหลัก</span>
+                </a>
+                
+                <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                    <span class="font-medium text-gray-900">หน้าแรก</span>
+                </a>
+                
+                <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="font-medium text-gray-900">บริการ</span>
+                </a>
+                
+                <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                    </svg>
+                    <span class="font-medium text-gray-900">ติดตั้งแอป</span>
+                </a>
+                
+                <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="font-medium text-gray-900">ช่วยเหลือ</span>
+                </a>
+                
+                <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
+                    </svg>
+                    <span class="font-medium text-gray-900">ข้อเสนอแนะ</span>
+                </a>
+                
+                <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                    <span class="font-medium text-gray-900">ธุรกิจ</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40" onclick="closeSidebar()"></div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+
+
+
+        <!-- Activities -->
+        <section class="mb-12">
+            <h3 class="text-2xl font-bold text-gray-900 mb-6">กิจกรรม</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Activity Card 1 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover cursor-pointer" onclick="goToEvent('castle-defense')">
+                    <div class="h-48 bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
+                        <img src="castle-defense-game.jpg" alt="Castle Defense Game" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-semibold text-lg text-gray-900">Castle Defense</h4>
+                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">กำลังดำเนินการ</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-2">แอคชั่น • ป้องกันปราสาท</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <span class="text-yellow-400">⭐⭐⭐⭐⭐</span>
+                                <span class="text-gray-600 text-sm ml-1">4.8</span>
+                            </div>
+                            <button class="bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors" onclick="event.stopPropagation(); goToEvent('castle-defense')">
+                                เข้าร่วม
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Card 2 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover cursor-pointer" onclick="goToEvent('speed-racing')">
+                    <div class="h-48 bg-gradient-to-br from-green-400 to-blue-400 flex items-center justify-center">
+                        <img src="speed-racing-game.jpg" alt="Speed Racing Game" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-semibold text-lg text-gray-900">Speed Racing</h4>
+                            <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium">มาแรง</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-2">แข่งรถ • ความเร็วสูง</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <span class="text-yellow-400">⭐⭐⭐⭐⭐</span>
+                                <span class="text-gray-600 text-sm ml-1">4.6</span>
+                            </div>
+                            <button class="bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors" onclick="event.stopPropagation(); goToEvent('speed-racing')">
+                                เข้าร่วม
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Card 3 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover cursor-pointer" onclick="goToEvent('mind-puzzle')">
+                    <div class="h-48 bg-gradient-to-br from-orange-400 to-red-400 flex items-center justify-center">
+                        <img src="mind-puzzle-game.jpg" alt="Mind Puzzle Game" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-semibold text-lg text-gray-900">Mind Puzzle</h4>
+                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">แนะนำ</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-2">ปริศนา • ฝึกสมอง</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <span class="text-yellow-400">⭐⭐⭐⭐⭐</span>
+                                <span class="text-gray-600 text-sm ml-1">4.9</span>
+                            </div>
+                            <button class="bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors" onclick="event.stopPropagation(); goToEvent('mind-puzzle')">
+                                เข้าร่วม
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Card 4 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover cursor-pointer" onclick="goToEvent('soccer-champion')">
+                    <div class="h-48 bg-gradient-to-br from-indigo-400 to-purple-400 flex items-center justify-center">
+                        <img src="soccer-champion-game.jpg" alt="Soccer Champion Game" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-semibold text-lg text-gray-900">Soccer Champion</h4>
+                            <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium">กำลังดำเนินการ</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-2">กีฬา • ฟุตบอล</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <span class="text-yellow-400">⭐⭐⭐⭐⭐</span>
+                                <span class="text-gray-600 text-sm ml-1">4.7</span>
+                            </div>
+                            <button class="bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors" onclick="event.stopPropagation(); goToEvent('soccer-champion')">
+                                เข้าร่วม
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recommended -->
+        <section>
+            <h3 class="text-2xl font-bold text-gray-900 mb-6">แนะนำ</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <!-- Recommended Game Item -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover cursor-pointer" onclick="goToGameDetail('target-shooter', this)">
+                    <div class="h-32 bg-gradient-to-br from-cyan-400 to-blue-400 flex items-center justify-center">
+                        <img src="target-shooter-game.jpg" alt="Target Shooter Game" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-semibold text-sm text-gray-900 mb-2">Target Shooter</h4>
+                        <div class="text-center">
+                            <span class="bg-blue-500 bg-opacity-20 text-blue-700 px-2 py-1 rounded-full text-xs font-bold view-counter">เข้าชม 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover cursor-pointer" onclick="goToGameDetail('gem-collector', this)">
+                    <div class="h-32 bg-gradient-to-br from-pink-400 to-red-400 flex items-center justify-center">
+                        <img src="gem-collector-game.jpg" alt="Gem Collector Game" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-semibold text-sm text-gray-900 mb-2">Gem Collector</h4>
+                        <div class="text-center">
+                            <span class="bg-blue-500 bg-opacity-20 text-blue-700 px-2 py-1 rounded-full text-xs font-bold view-counter">เข้าชม 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover cursor-pointer" onclick="goToGameDetail('cooking-master', this)">
+                    <div class="h-32 bg-gradient-to-br from-yellow-400 to-orange-400 flex items-center justify-center">
+                        <img src="cooking-master-game.jpg" alt="Cooking Master Game" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-semibold text-sm text-gray-900 mb-2">Cooking Master</h4>
+                        <div class="text-center">
+                            <span class="bg-blue-500 bg-opacity-20 text-blue-700 px-2 py-1 rounded-full text-xs font-bold view-counter">เข้าชม 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover cursor-pointer" onclick="goToGameDetail('star-quest', this)">
+                    <div class="h-32 bg-gradient-to-br from-green-400 to-teal-400 flex items-center justify-center">
+                        <img src="star-quest-game.jpg" alt="Star Quest Game" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-semibold text-sm text-gray-900 mb-2">Star Quest</h4>
+                        <div class="text-center">
+                            <span class="bg-blue-500 bg-opacity-20 text-blue-700 px-2 py-1 rounded-full text-xs font-bold view-counter">เข้าชม 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover cursor-pointer" onclick="goToGameDetail('space-adventure', this)">
+                    <div class="h-32 bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
+                        <img src="space-adventure-game.jpg" alt="Space Adventure Game" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-semibold text-sm text-gray-900 mb-2">Space Adventure</h4>
+                        <div class="text-center">
+                            <span class="bg-blue-500 bg-opacity-20 text-blue-700 px-2 py-1 rounded-full text-xs font-bold view-counter">เข้าชม 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover cursor-pointer" onclick="goToGameDetail('art-creator', this)">
+                    <div class="h-32 bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
+                        <img src="art-creator-game.jpg" alt="Art Creator Game" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-3">
+                        <h4 class="font-semibold text-sm text-gray-900 mb-2">Art Creator</h4>
+                        <div class="text-center">
+                            <span class="bg-blue-500 bg-opacity-20 text-blue-700 px-2 py-1 rounded-full text-xs font-bold view-counter">เข้าชม 0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+
+
+
+    <script>
+        // Game data structure - centralized data for all games
+        const gameData = {
+            // Activity Games (Events)
+            "castle-defense": {
+                id: "castle-defense",
+                name: "Castle Defense",
+                category: "แอคชั่น",
+                subcategory: "ป้องกันปราสาท",
+                description: `Castle Defense เป็นเกมป้องกันปราสาทที่ท้าทายความคิดเชิงกลยุทธ์ของคุณ! สร้างหอคอยป้องกันเพื่อต่อสู้กับศัตรูที่บุกเข้ามา
+
+ฟีเจอร์เด่น:
+• หอคอยป้องกันมากกว่า 15 ชนิด
+• ศัตรูหลากหลายรูปแบบ
+• ระบบอัพเกรดหอคอย
+• ด่านมากกว่า 50 ด่าน
+• กราฟิกสวยงามคมชัด
+• เล่นได้ทั้งออนไลน์และออฟไลน์
+
+เหมาะสำหรับผู้เล่นที่ชื่นชอบเกมแนวกลยุทธ์และการวางแผน!`,
+                coverColor: "from-purple-400 to-pink-400",
+                rating: 4.8,
+                status: "กำลังดำเนินการ",
+                statusColor: "green",
+                type: "event",
+                featured: true,
+                popular: true
+            },
+            "speed-racing": {
+                id: "speed-racing",
+                name: "Speed Racing",
+                category: "แข่งรถ",
+                subcategory: "ความเร็วสูง",
+                description: `Speed Racing เป็นเกมแข่งรถสุดมันส์ที่จะทำให้คุณรู้สึกตื่นเต้นไปกับความเร็วสูง! ขับรถผ่านเส้นทางที่ท้าทายและแข่งขันกับคู่แข่งที่แข็งแกร่ง
+
+ฟีเจอร์เด่น:
+• รถแข่งมากกว่า 25 คัน
+• สนามแข่งหลากหลาย
+• ระบบปรับแต่งรถ
+• โหมดแข่งขันออนไลน์
+• กราฟิก 3D สมจริง
+• ฟิสิกส์การขับขี่ที่แม่นยำ
+
+เหมาะสำหรับผู้ที่ชื่นชอบความเร็วและการแข่งขัน!`,
+                coverColor: "from-green-400 to-blue-400",
+                rating: 4.6,
+                status: "มาแรง",
+                statusColor: "red",
+                type: "event",
+                featured: true,
+                popular: true
+            },
+            "mind-puzzle": {
+                id: "mind-puzzle",
+                name: "Mind Puzzle",
+                category: "ปริศนา",
+                subcategory: "ฝึกสมอง",
+                description: `Mind Puzzle เป็นเกมปริศนาที่จะช่วยฝึกสมองและพัฒนาความคิดเชิงตรรกะของคุณ ผ่านปริศนาที่หลากหลายและท้าทาย
+
+ฟีเจอร์เด่น:
+• ปริศนามากกว่า 200 ข้อ
+• หลายประเภทปริศนา
+• ระบบคะแนนและอันดับ
+• โหมดแข่งขันเวลา
+• กราฟิกสวยงามเรียบง่าย
+• เล่นได้ทุกที่ทุกเวลา
+
+เหมาะสำหรับทุกเพศทุกวัยที่ต้องการฝึกสมอง!`,
+                coverColor: "from-orange-400 to-red-400",
+                rating: 4.9,
+                status: "แนะนำ",
+                statusColor: "blue",
+                type: "event",
+                featured: true,
+                popular: true
+            },
+            "soccer-champion": {
+                id: "soccer-champion",
+                name: "Soccer Champion",
+                category: "กีฬา",
+                subcategory: "ฟุตบอล",
+                description: `Soccer Champion เป็นเกมฟุตบอลที่จะทำให้คุณได้สัมผัสประสบการณ์การเป็นแชมป์ฟุตบอลโลก! จัดการทีมและแข่งขันในลีกต่างๆ
+
+ฟีเจอร์เด่น:
+• ทีมมากกว่า 100 ทีม
+• ลีกและทัวร์นาเมนต์หลากหลาย
+• ระบบจัดการทีม
+• นักเตะดาวดังจริง
+• กราฟิก 3D สมจริง
+• โหมดแข่งขันออนไลน์
+
+เหมาะสำหรับแฟนฟุตบอลทุกคน!`,
+                coverColor: "from-indigo-400 to-purple-400",
+                rating: 4.7,
+                status: "กำลังดำเนินการ",
+                statusColor: "yellow",
+                type: "event",
+                featured: true,
+                popular: true
+            },
+
+            // Recommended Games
+            "target-shooter": {
+                id: "target-shooter",
+                name: "Target Shooter",
+                category: "แอคชั่น",
+                subcategory: "ยิงเป้า",
+                description: `Target Shooter เป็นเกมยิงเป้าที่ท้าทายความแม่นยำและสมาธิของคุณ ยิงเป้าหมายต่างๆ ด้วยอาวุธที่หลากหลาย
+
+ฟีเจอร์เด่น:
+• อาวุธมากกว่า 20 ชนิด
+• เป้าหมายหลากหลายรูปแบบ
+• ระบบอัพเกรดอาวุธ
+• โหมดแข่งขันเวลา
+• กราฟิกสมจริง
+• ฟิสิกส์การยิงที่แม่นยำ
+
+เหมาะสำหรับผู้ที่ชื่นชอบเกมยิงและความท้าทาย!`,
+                coverColor: "from-cyan-400 to-blue-400",
+                type: "game",
+                views: 0
+            },
+            "gem-collector": {
+                id: "gem-collector",
+                name: "Gem Collector",
+                category: "ผจญภัย",
+                subcategory: "เก็บอัญมณี",
+                description: `Gem Collector เป็นเกมผจญภัยที่คุณจะได้สำรวจถ้ำลึกลับเพื่อค้นหาอัญมณีล้ำค่า หลีกเลี่ยงกับดักและศัตรูที่อันตราย
+
+ฟีเจอร์เด่น:
+• ถ้ำมากกว่า 100 แห่ง
+• อัญมณีหลากหลายชนิด
+• กับดักและปริศนา
+• ระบบอัพเกรดเครื่องมือ
+• กราฟิกสวยงาม
+• เสียงประกอบสมจริง
+
+เหมาะสำหรับผู้ที่ชื่นชอบการผจญภัยและสำรวจ!`,
+                coverColor: "from-pink-400 to-red-400",
+                type: "game",
+                views: 0
+            },
+            "cooking-master": {
+                id: "cooking-master",
+                name: "Cooking Master",
+                category: "จำลองสถานการณ์",
+                subcategory: "ทำอาหาร",
+                description: `Cooking Master เป็นเกมทำอาหารที่จะทำให้คุณได้สัมผัสประสบการณ์การเป็นเชฟมืออาชีพ ปรุงอาหารอร่อยให้กับลูกค้า
+
+ฟีเจอร์เด่น:
+• สูตรอาหารมากกว่า 200 เมนู
+• ร้านอาหารหลากหลายสไตล์
+• ระบบอัพเกรดครัว
+• ลูกค้าที่หลากหลาย
+• กราฟิกน่ารักสดใส
+• เล่นง่ายสนุกทุกวัย
+
+เหมาะสำหรับทุกคนที่ชื่นชอบการทำอาหาร!`,
+                coverColor: "from-yellow-400 to-orange-400",
+                type: "game",
+                views: 0
+            },
+            "star-quest": {
+                id: "star-quest",
+                name: "Star Quest",
+                category: "ผจญภัย",
+                subcategory: "อวกาศ",
+                description: `Star Quest เป็นเกมผจญภัยในอวกาศที่จะพาคุณไปสำรวจกาแล็กซี่อันกว้างใหญ่ ค้นพบดาวเคราะห์ใหม่และต่อสู้กับมนุษย์ต่างดาว
+
+ฟีเจอร์เด่น:
+• ดาวเคราะห์มากกว่า 50 ดวง
+• ยานอวกาศหลากหลาย
+• ระบบการต่อสู้ในอวกาศ
+• เทคโนโลยีอนาคต
+• กราฟิก 3D สวยงาม
+• เนื้อเรื่องที่น่าติดตาม
+
+เหมาะสำหรับผู้ที่ชื่นชอบไซไฟและการผจญภัย!`,
+                coverColor: "from-green-400 to-teal-400",
+                type: "game",
+                views: 0
+            },
+            "space-adventure": {
+                id: "space-adventure",
+                name: "Space Adventure",
+                category: "แอคชั่น",
+                subcategory: "อวกาศ",
+                description: `Space Adventure เป็นเกมแอคชั่นในอวกาศที่เต็มไปด้วยการต่อสู้และการผจญภัย บินยานรบผ่านสนามรบในอวกาศ
+
+ฟีเจอร์เด่น:
+• ยานรบมากกว่า 15 ลำ
+• อาวุธและโล่พลังงาน
+• ศัตรูมนุษย์ต่างดาว
+• ภารกิจหลากหลาย
+• กราฟิกสุดอลังการ
+• เสียงเอฟเฟกต์สมจริง
+
+เหมาะสำหรับผู้ที่ชื่นชอบเกมแอคชั่นและอวกาศ!`,
+                coverColor: "from-blue-400 to-purple-400",
+                type: "game",
+                views: 0
+            },
+            "art-creator": {
+                id: "art-creator",
+                name: "Art Creator",
+                category: "สร้างสรรค์",
+                subcategory: "วาดรูป",
+                description: `Art Creator เป็นเกมสร้างสรรค์ที่จะปลดปล่อยความคิดสร้างสรรค์ของคุณ วาดรูป ระบายสี และสร้างผลงานศิลปะที่สวยงาม
+
+ฟีเจอร์เด่น:
+• เครื่องมือวาดรูปครบครัน
+• สีและพู่กันหลากหลาย
+• เทมเพลตและลวดลาย
+• แชร์ผลงานกับเพื่อน
+• บันทึกและส่งออกรูป
+• เล่นง่ายเหมาะทุกวัย
+
+เหมาะสำหรับผู้ที่ชื่นชอบศิลปะและการสร้างสรรค์!`,
+                coverColor: "from-purple-400 to-pink-400",
+                type: "game",
+                views: 0
+            }
+        };
+
+        // Load saved view counts from localStorage
+        function loadViewCounts() {
+            document.querySelectorAll('.view-counter').forEach(counter => {
+                const gameCard = counter.closest('[onclick*="goToGameDetail"]');
+                if (gameCard) {
+                    const onclickAttr = gameCard.getAttribute('onclick');
+                    const gameId = onclickAttr.match(/'([^']+)'/)[1];
+                    const savedViews = localStorage.getItem(`game_views_${gameId}`);
+                    if (savedViews) {
+                        counter.textContent = `เข้าชม ${savedViews}`;
+                        gameData[gameId].views = parseInt(savedViews);
+                    }
+                }
+            });
+        }
+
+        // Initialize view counts on page load
+        document.addEventListener('DOMContentLoaded', loadViewCounts);
+
+        // Search functionality
+        document.querySelector('input[type="text"]').addEventListener('input', function(e) {
+            if (e.target.value.length > 0) {
+                console.log('Searching for:', e.target.value);
+                // Here you would implement actual search functionality
+            }
+        });
+
+        // Menu button functionality
+        document.querySelector('header button').addEventListener('click', function() {
+            openSidebar();
+        });
+
+        // Sidebar functions
+        function openSidebar() {
+            document.getElementById('sidebar').classList.remove('translate-x-full');
+            document.getElementById('overlay').classList.remove('hidden');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.add('translate-x-full');
+            document.getElementById('overlay').classList.add('hidden');
+        }
+
+        // Navigation functions
+        function goToEvent(eventId) {
+            const gameInfo = gameData[eventId];
+            const url = `event.html?id=${eventId}`;
+            console.log(`Navigating to event: ${url}`, gameInfo);
+            window.location.href = url;
+        }
+
+        function goToGameDetail(gameId, element) {
+            // Update view counter first
+            const viewSpan = element.querySelector('.view-counter');
+            const currentText = viewSpan.textContent;
+            const currentCount = parseInt(currentText.match(/\d+/) || [0])[0];
+            const newCount = currentCount + 1;
+            viewSpan.textContent = `เข้าชม ${newCount}`;
+            
+            // Update game data
+            gameData[gameId].views = newCount;
+            
+            // Store updated view count in localStorage for persistence
+            localStorage.setItem(`game_views_${gameId}`, newCount);
+            
+            // Navigate to game detail
+            const gameInfo = gameData[gameId];
+            const url = `detail.html?id=${gameId}`;
+            console.log(`Navigating to game detail: ${url}`, gameInfo);
+            window.location.href = url;
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'968e7656747f55a1',t:'MTc1NDE0NzAwOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
