@@ -546,32 +546,19 @@
         }
     
         function loadRecommendedGames() {
-        const container = document.getElementById("recommended-games");
-        container.innerHTML = ""; // ล้างของเก่า (เผื่อ reload)
+    const container = document.getElementById("recommended-games");
+    container.innerHTML = "";
+    console.log("loadRecommendedGames() เรียกใช้งานแล้ว");
 
-        for (const gameId in gameData) {
-            const game = gameData[gameId];
-            if (game.type === "game" && game.featured) {
-                container.innerHTML += createGameCard(game);
-            }
+    for (const gameId in gameData) {
+        const game = gameData[gameId];
+        console.log(`ตรวจสอบเกม: ${game.name}, type=${game.type}, featured=${game.featured}`);
+        if (game.type === "game" && game.featured) {
+            console.log(`เพิ่มเกม: ${game.name}`);
+            container.innerHTML += createGameCard(game);
         }
     }
-
-    function createGameCard(game) {
-        return `
-            <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover cursor-pointer" onclick="goToGameDetail('${game.id}', this)">
-                <div class="h-32 bg-gradient-to-br ${game.coverColor} flex items-center justify-center">
-                    <img src="${game.id}-game.jpg" alt="${game.name}" class="w-full h-full object-cover">
-                </div>
-                <div class="p-3">
-                    <h4 class="font-semibold text-sm text-gray-900 mb-2">${game.name}</h4>
-                    <div class="text-center">
-                        <span class="bg-blue-500 bg-opacity-20 text-blue-700 px-2 py-1 rounded-full text-xs font-bold view-counter">เข้าชม ${game.views || 0}</span>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
+}
 
     document.addEventListener("DOMContentLoaded", () => {
         loadViewCounts(); // ใช้ของคุณเดิม
