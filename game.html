@@ -241,8 +241,11 @@
             </div>
         </section>
 
-        
-
+        <!-- Recommended -->
+<section class="mb-10">
+    <h2 class="text-2xl font-bold text-gray-900 mb-6">แนะนำ</h2>
+    <div id="recommended-games" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"></div>
+</section>
 
 
 
@@ -541,6 +544,40 @@
             console.log(`Navigating to game detail: ${url}`, gameInfo);
             window.location.href = url;
         }
+    
+        function loadRecommendedGames() {
+        const container = document.getElementById("recommended-games");
+        container.innerHTML = ""; // ล้างของเก่า (เผื่อ reload)
+
+        for (const gameId in gameData) {
+            const game = gameData[gameId];
+            if (game.type === "game" && game.featured) {
+                container.innerHTML += createGameCard(game);
+            }
+        }
+    }
+
+    function createGameCard(game) {
+        return `
+            <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover cursor-pointer" onclick="goToGameDetail('${game.id}', this)">
+                <div class="h-32 bg-gradient-to-br ${game.coverColor} flex items-center justify-center">
+                    <img src="${game.id}-game.jpg" alt="${game.name}" class="w-full h-full object-cover">
+                </div>
+                <div class="p-3">
+                    <h4 class="font-semibold text-sm text-gray-900 mb-2">${game.name}</h4>
+                    <div class="text-center">
+                        <span class="bg-blue-500 bg-opacity-20 text-blue-700 px-2 py-1 rounded-full text-xs font-bold view-counter">เข้าชม ${game.views || 0}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        loadViewCounts(); // ใช้ของคุณเดิม
+        loadRecommendedGames(); // โหลดเฉพาะเกมแนะนำ
+    });
+        
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'968e7656747f55a1',t:'MTc1NDE0NzAwOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
